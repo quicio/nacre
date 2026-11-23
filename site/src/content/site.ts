@@ -195,6 +195,34 @@ export const COPY = {
       captionOne: 'Vista de instrumento: transporte, macros y lectura de estado.',
       captionTwo: 'Editor de patch: nodos tipados, modulación y parámetros.',
     },
+    emergence: {
+      title: 'Exploración del sonido emergente',
+      lede: 'El sonido no se escribe nota a nota. Emerge de capas que se repiten, semillas que se heredan y reglas que limitan cuánto puede cambiar una pieza antes de dejar de ser ella misma.',
+      probe: 'Capa',
+      step: 'Paso',
+      pulses: 'pulsos',
+      events: 'eventos',
+      caption:
+        'Cada línea es una capa con su propio patrón; el pulso que la recorre enciende sus eventos. La forma no se dibuja: se calcula.',
+      note: 'Sin audio todavía. El primer gate de M1 exige tres renders de referencia; cuando existan, esta sección los reproducirá.',
+      items: [
+        {
+          n: '01',
+          title: 'Capas',
+          body: 'Cada voz es una lámina: oscilador, filtro, envolvente. El timbre aparece en cómo se superponen, no en cada una por separado.',
+        },
+        {
+          n: '02',
+          title: 'Semillas',
+          body: 'Una semilla por generador, derivada de una maestra. La misma semilla devuelve la misma pieza; cambiarla es una decisión, no un accidente.',
+        },
+        {
+          n: '03',
+          title: 'Presupuesto',
+          body: 'La evolución tiene un límite de cambio por compás y una memoria del motivo. Sin presupuesto, el azar borra la identidad.',
+        },
+      ],
+    },
     specs: {
       kicker: 'Especificaciones',
       title: 'Contratos antes que código',
@@ -331,6 +359,34 @@ export const COPY = {
       concept: 'Concept',
       captionOne: 'Instrument view: transport, macros and state readout.',
       captionTwo: 'Patch editor: typed nodes, modulation and parameters.',
+    },
+    emergence: {
+      title: 'Exploring emergent sound',
+      lede: 'Sound is not written note by note. It emerges from repeating layers, inherited seeds and rules that limit how much a piece may change before it stops being itself.',
+      probe: 'Layer',
+      step: 'Step',
+      pulses: 'pulses',
+      events: 'events',
+      caption:
+        'Each line is a layer with its own pattern; the scanning pulse lights its events. The shape is not drawn: it is computed.',
+      note: 'No audio yet. The first M1 gate requires three reference renders; when they exist, this section will play them.',
+      items: [
+        {
+          n: '01',
+          title: 'Layers',
+          body: 'Each voice is a lamella: oscillator, filter, envelope. Timbre appears in how they overlap, not in any one of them alone.',
+        },
+        {
+          n: '02',
+          title: 'Seeds',
+          body: 'One seed per generator, derived from a master. The same seed returns the same piece; changing it is a decision, not an accident.',
+        },
+        {
+          n: '03',
+          title: 'Budget',
+          body: 'Evolution has a change limit per bar and a memory of the motif. Without a budget, chance erases identity.',
+        },
+      ],
     },
     specs: {
       kicker: 'Specifications',

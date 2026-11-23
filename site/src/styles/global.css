@@ -1332,6 +1332,124 @@ button {
   text-decoration: none;
 }
 
+/* ---------- emergence ---------- */
+
+.emergence__figure {
+  position: relative;
+  margin: 0 0 clamp(2rem, 4vw, 3rem);
+  border: var(--rule);
+  background: var(--ink-2);
+}
+
+.emergence__canvas {
+  display: block;
+  width: 100%;
+  height: clamp(240px, 32vw, 440px);
+  touch-action: pan-y;
+}
+
+.emergence__readout {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pearl-mute);
+}
+
+.emergence__readout b {
+  color: var(--violet);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.emergence__probe {
+  color: var(--pearl);
+}
+
+.emergence__caption {
+  padding: 0.85rem 1rem;
+  border-top: var(--rule);
+  color: var(--pearl-dim);
+  font-size: 0.875rem;
+}
+
+.emergence__items {
+  display: grid;
+  border-top: var(--rule);
+}
+
+.emergence__items li {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0.35rem 0.9rem;
+  padding-top: 1.4rem;
+  padding-bottom: 1.4rem;
+  border-bottom: var(--rule);
+}
+
+.emergence__n {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--pearl-mute);
+  padding-top: 0.2rem;
+}
+
+.emergence__item-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.45rem;
+  line-height: 1.1;
+}
+
+.emergence__item-body {
+  grid-column: 2;
+  color: var(--pearl-dim);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  max-width: 46ch;
+}
+
+.emergence__note {
+  margin-top: 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--pearl-mute);
+  max-width: 74ch;
+}
+
+@media (min-width: 900px) {
+  .emergence__items {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-bottom: var(--rule);
+  }
+
+  .emergence__items li {
+    border-bottom: 0;
+    border-left: 1px solid var(--line);
+    padding: 1.6rem clamp(1rem, 2vw, 1.6rem) 1.8rem;
+  }
+
+  .emergence__items li:first-child {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .emergence__items li:last-child {
+    padding-right: 0;
+  }
+}
+
 @media (min-width: 960px) {
   .specs-grid {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);

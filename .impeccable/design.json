@@ -2,6 +2,7 @@
   "version": 1,
   "name": "NACRE",
   "generatedAt": "2026-11-22",
+  "updatedAt": "2026-11-23",
   "source": "site/src/styles/global.css",
   "surface": "site/",
   "tokens": {

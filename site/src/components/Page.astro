@@ -1,6 +1,7 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import Emergence from './Emergence.astro';
 import type { Lang } from '../content/site';
 import { COPY, FACTS, FACT_LABELS, GITHUB, MILESTONES } from '../content/site';
 import logoLight from '../assets/brand/nacre-logo-light.svg';
@@ -220,6 +221,8 @@ const uiPatchLarge = await getImage({ src: uiPatch, width: 1800, format: 'webp',
         </div>
       </div>
     </section>
+
+    <Emergence {...c.emergence} />
 
     <section class="section" id="arquitectura" aria-labelledby="arch-title">
       <div class="shell">

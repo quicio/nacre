@@ -156,6 +156,7 @@ Sin `clip-path` orgánicos, sin blobs, sin esquinas redondeadas.
 - **Acordeón de milestone**: `<details>` nativo; marcador `summary` oculto; estado "En curso" en violeta, "No iniciado" en `pearl-mute`.
 - **Requisito**: tarjeta con borde, etiqueta mono, título display, cuerpo, escenarios WHEN/THEN en dos columnas con palabras clave en violeta y verde mar.
 - **Etiquetas**: mono 12 px mínimo, tracking 0.12em, color `pearl-mute`; nunca por debajo del suelo de legibilidad.
+- **Secuenciador de emergencia**: canvas de 9 capas × 16 pasos, con patrones euclidianos, pulso de barrido y eventos encendidos. Hover sobre una capa resalta su fila y la lectura pasa a `CAPA 05/09 · 2 de 16 pulsos`; sin hover muestra `PASO 12/16 · 3 eventos`. Es una visualización del mecanismo, no audio real.
 
 ## Do's and Don'ts
 
