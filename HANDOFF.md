@@ -25,6 +25,7 @@
 - `.github/workflows/pages.yml`: despliegue a GitHub Pages.
 - `.impeccable/`: configuración de Impeccable, comp aprobada (`mocks/approved/`) y sidecar de tokens (`design.json`).
 - La placa de nácar del hero y del cierre es una imagen generada, con prompt embebido en el PNG (`embed-prompt`); las dos maquetas de UI están etiquetadas como **concepto** y también llevan su procedencia.
+- Logo de marca vectorizado a partir del PNG entregado: `assets/brand/nacre-logo.svg` (currentColor), `-light` (perla), `-ink` (obsidiana), símbolo independiente y marca simplificada para favicon. El original conserva el halo del PNG fuente; los SVG son el material de uso.
 
 ## Qué NO existe todavía
 

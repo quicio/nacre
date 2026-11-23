@@ -1,9 +1,9 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Symbol from '../components/Symbol.astro';
 import type { Lang } from '../content/site';
 import { COPY, FACTS, FACT_LABELS, GITHUB, MILESTONES } from '../content/site';
+import logoLight from '../assets/brand/nacre-logo-light.svg';
 import strataA from '../assets/nacre-strata-a.png';
 import strataB from '../assets/nacre-strata-b.png';
 import uiInstrument from '../assets/ui-instrument-concept.png';
@@ -31,9 +31,7 @@ const uiPatchLarge = await getImage({ src: uiPatch, width: 1800, format: 'webp',
   <header class="masthead">
     <div class="shell masthead__inner">
       <a class="brand" href={base} aria-label="NACRE — inicio">
-        <Symbol size={34} title="Símbolo de NACRE" />
-        <span class="brand__word">NACRE</span>
-        <span class="brand__descriptor meta">{c.hero.kicker}</span>
+        <img class="brand__logo" src={logoLight.src} alt="NACRE" width="1960" height="325" />
       </a>
       <nav class="masthead__nav" aria-label="Principal">
         <a href={here('#roadmap')}>{c.nav.roadmap}</a>
@@ -406,7 +404,9 @@ const uiPatchLarge = await getImage({ src: uiPatch, width: 1800, format: 'webp',
 
   <footer class="footer">
     <div class="shell footer__inner">
-      <span class="footer__brand">NACRE</span>
+      <span class="footer__brand">
+        <img src={logoLight.src} alt="NACRE" width="1960" height="325" />
+      </span>
       <span class="footer__note">{c.footer.note}</span>
       <span class="footer__note">{c.footer.built}</span>
       <span class="footer__links">

@@ -229,7 +229,7 @@ button {
   display: flex;
   align-items: center;
   gap: clamp(1rem, 3vw, 2.5rem);
-  min-height: 76px;
+  min-height: 84px;
 }
 
 .brand {
@@ -238,32 +238,27 @@ button {
   gap: 0.8rem;
   text-decoration: none;
   flex-shrink: 0;
+  color: var(--pearl);
 }
 
 .brand:hover {
   color: inherit;
 }
 
-.brand__mark {
-  width: 34px;
-  height: 34px;
-  color: var(--pearl);
-  opacity: 0.9;
+.brand__logo {
+  height: 42px;
+  width: auto;
+  display: block;
 }
 
-.brand__word {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  letter-spacing: 0.26em;
-  line-height: 1;
-  padding-top: 0.1em;
-}
+@media (max-width: 640px) {
+  .brand__logo {
+    height: 32px;
+  }
 
-.brand__descriptor {
-  display: none;
-  padding-left: 1.1rem;
-  margin-left: 0.4rem;
-  border-left: var(--rule);
+  .masthead__inner {
+    min-height: 72px;
+  }
 }
 
 .masthead__nav {
@@ -400,12 +395,6 @@ button {
     background:
       linear-gradient(180deg, color-mix(in srgb, var(--ink) 55%, transparent) 0%, var(--ink) 62%),
       linear-gradient(90deg, var(--ink) 0%, transparent 75%);
-  }
-}
-
-@media (min-width: 900px) {
-  .brand__descriptor {
-    display: block;
   }
 }
 
@@ -1414,9 +1403,13 @@ button {
 }
 
 .footer__brand {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: 0.26em;
+  display: flex;
+  align-items: center;
+}
+
+.footer__brand img {
+  height: 20px;
+  width: auto;
 }
 
 .footer__note,

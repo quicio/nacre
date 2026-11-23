@@ -144,7 +144,12 @@ Sin `clip-path` orgánicos, sin blobs, sin esquinas redondeadas.
 
 ## Components
 
-- **Wordmark**: NACRE en Bodoni Moda 500, tracking 0.26em, precedido del símbolo a 34 px. El símbolo debe leerse a 16 px sin color.
+- **Logo (lockup)**: símbolo topográfico + wordmark NACRE. Se usa siempre desde `site/src/assets/brand/nacre-logo-light.svg` (perla, fondos oscuros) o `nacre-logo-ink.svg` (obsidiana, fondos claros). Nunca se recompone con texto: el wordmark va vectorizado.
+  - Altura de uso: 42 px en cabecera de escritorio, 32 px en móvil, 20 px en pie. Por debajo de 24 px usar el símbolo simplificado (`nacre-symbol-small.svg`), no el lockup.
+  - Área de respeto: la altura de la «N» alrededor del lockup; nada entra en ese margen.
+- **Símbolo**: `nacre-symbol-light.svg` / `nacre-symbol-ink.svg`, 560×325. Legible desde 48 px; por debajo, usar la versión simplificada de 4 anillos.
+- **Favicon**: `site/public/favicon.svg`, símbolo simplificado sobre obsidiana, trazo grueso para 16 px.
+- **Wordmark**: NACRE en Bodoni Moda 500 con tracking 0.26em; el logo vectorizado es la fuente de verdad, no el texto en vivo.
 - **Botón primario**: rectángulo de 1 px `pearl`, altura 52 px, etiqueta mono en mayúsculas, flecha dibujada. Hover: fondo `graphite-2`, borde `pearl`.
 - **Botón fantasma**: mismo cuerpo, borde `line-strong`, texto `pearl-dim`. Hover: borde `pearl`.
 - **Placa**: figura con borde `line`, imagen 16:9, etiqueta "Concepto" superpuesta, pie de foto en `pearl-dim`. Clic para abrir a tamaño completo.
@@ -155,6 +160,7 @@ Sin `clip-path` orgánicos, sin blobs, sin esquinas redondeadas.
 ## Do's and Don'ts
 
 **Do**
+- Usa los SVG del logo tal como están; el lockup es la marca, no una composición tipográfica.
 - Deja que el nácar sea el único gesto dominante por pantalla.
 - Usa reglas de 1 px y espacio en blanco para separar, no sombras.
 - Escribe cifras reales (27 requisitos, 56 escenarios, 8 ADR) y marca el estado real (M0).
