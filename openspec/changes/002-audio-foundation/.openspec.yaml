@@ -1,0 +1,7 @@
+schema: spec-driven
+created: 2026-11-22
+goal: Producir audio estéreo en tiempo real de forma segura, con un seno controlable, arranque/parada y render offline determinista.
+affected_areas:
+  - audio
+  - runtime
+  - app

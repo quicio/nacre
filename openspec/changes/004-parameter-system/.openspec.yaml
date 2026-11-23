@@ -1,0 +1,8 @@
+schema: spec-driven
+created: 2026-11-22
+goal: Unificar la identidad, validación, normalización, suavizado y transferencia en tiempo real de todos los parámetros del instrumento.
+affected_areas:
+  - parameters
+  - application
+  - audio
+  - ui

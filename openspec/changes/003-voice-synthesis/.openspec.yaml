@@ -1,0 +1,7 @@
+schema: spec-driven
+created: 2026-11-22
+goal: Convertir el seno de prueba en una voz expresiva con saw anti-aliased, envolvente, filtro resonante, LFO y saturación.
+affected_areas:
+  - dsp
+  - voice
+  - app

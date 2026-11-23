@@ -1,0 +1,47 @@
+schema: spec-driven
+
+context: |
+  Nacre es un instrumento musical generativo escrito en Rust, no un DAW ni un secuenciador.
+  Prioridades: calidad sonora, tiempo real seguro, Clean Architecture, determinismo y agente nativo.
+
+  Restricciones que un agente no puede inferir del código (aún no hay código):
+  - Rust edición 2024, toolchain fijado en 1.100.0. MSRV mínimo 1.95 (lo impone egui 0.37).
+  - Dirección de dependencias: Presentation -> Application -> Domain. Infrastructure implementa puertos.
+  - nacre-domain no usa serde, no hace I/O y no conoce audio, UI ni IA.
+  - El callback de audio no asigna memoria, no bloquea, no hace I/O, no compila grafos y no puede entrar en pánico.
+  - cpal solo puede aparecer en el crate de audio (nacre-audio).
+  - Todo cambio de comportamiento se especifica como change de OpenSpec antes de implementarse.
+  - Los documentos de producto, arquitectura, ADRs y specs se escriben en español; el código y los identificadores en inglés.
+  - Las decisiones no validadas se marcan como hipótesis y se asocian a un spike con criterio de salida.
+
+  Estado actual: M0 (planificación). Sin código de audio. Change activo: 001-workspace-foundation.
+
+rules:
+  proposal:
+    - Escribir en español, conciso, con "Por qué", "Qué cambia", capacidades e impacto.
+    - Declarar siempre el no-alcance explícito para evitar que el slice crezca.
+    - No proponer el plugin, el agente ni el grafo modular antes de su milestone.
+  specs:
+    - Los requisitos describen comportamiento observable, nunca nombres de clases, funciones ni librerías.
+    - Usar SHALL/MUST en los requisitos; cada uno con al menos un escenario WHEN/THEN.
+    - Un requisito = un comportamiento; descripciones de menos de 500 caracteres.
+    - Ser explícito con rangos, unidades, tolerancias y condiciones de error medibles.
+  design:
+    - Incluir alternativas consideradas y por qué se descartaron.
+    - Separar lo confirmado de lo que es hipótesis y requiere spike.
+    - Referenciar ADRs y documentos de arquitectura en lugar de duplicarlos.
+  tasks:
+    - Tareas pequeñas, ordenadas por dependencia y verificables.
+    - Cada tarea debe indicar su criterio de verificación (comando, test o medición).
+    - No incluir tareas de changes futuros.
+
+operations:
+  apply:
+    guidance:
+      - Implementar solo las tareas del change activo, en orden.
+      - No marcar una tarea como completa sin haber ejecutado su verificación.
+      - Detenerse y reportar si un requisito de la spec es ambiguo o no se puede cumplir.
+  archive:
+    guidance:
+      - Verificar que todos los checkboxes están marcados y que la validación estricta pasa.
+      - Resumir qué requisitos nuevos entran en openspec/specs/ antes de archivar.

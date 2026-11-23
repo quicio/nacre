@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-11-22
+goal: Crear el workspace Rust, los límites entre crates y la base de CI/documentación que sostienen el primer vertical slice.
+affected_areas:
+  - workspace
+  - ci
+  - tooling
+  - documentation
+skip_specs: true
