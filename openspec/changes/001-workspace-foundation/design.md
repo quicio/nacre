@@ -19,7 +19,7 @@ nacre/
 │   ├── nacre-domain/           lib: ids, errores base, versión de formato
 │   ├── nacre-application/      lib: puertos mínimos (AudioHost, Clock, Renderer)
 │   ├── nacre-dsp/              lib: SampleRate, BlockSize, gain util + test
-│   └── nacre-audio/            lib: AudioConfig (sin cpal todavía; se añade en 002)
+│   └── nacre-audio-runtime/            lib: AudioConfig (sin cpal todavía; se añade en 002)
 └── apps/
     └── nacre-standalone/       bin: main vacío que imprime versión y estado "sin audio"
 ```
@@ -31,7 +31,7 @@ nacre/
 | `nacre-domain` | Newtypes `PatchId`, `NodeId`, `ParameterId`, `Revision`; `DomainError` | Son la base de todo lo que viene y ya se pueden testear |
 | `nacre-application` | Traits `AudioHost`, `Clock`, `Renderer` con firmas mínimas | El change 002 los implementa; definirlos ahora fija la frontera |
 | `nacre-dsp` | `SampleRate`, `BlockSize`, `apply_gain` con test | Es el primer código DSP real y valida el crate en CI |
-| `nacre-audio` | `AudioConfig` (sample rate, canales, buffer) con validación | El change 002 añade `cpal` sobre esta base |
+| `nacre-audio-runtime` | `AudioConfig` (sample rate, canales, buffer) con validación | El change 002 añade `cpal` sobre esta base |
 | `nacre-standalone` | `main` que imprime versión y "audio no inicializado" | Verifica que el binario enlaza y arranca sin dispositivo |
 
 Nada de `TODO` módulos vacíos, ni traits sin uso, ni carpetas `mod foo {}` de relleno.
@@ -39,7 +39,7 @@ Nada de `TODO` módulos vacíos, ni traits sin uso, ni carpetas `mod foo {}` de 
 ## Decisiones
 
 ### D1 — Cinco crates, no catorce
-La estructura propuesta del blueprint (`patch`, `graph`, `generative`, `modulation`, `composition`, `performance`, `agent-api`, ...) se crea **cuando exista** el código que la justifica. En VS1, `patch`/`graph` viven conceptualmente en `nacre-domain` y `nacre-audio`; se extraerán cuando su tamaño lo pida (ver ADR-0001).
+La estructura propuesta del blueprint (`patch`, `graph`, `generative`, `modulation`, `composition`, `performance`, `agent-api`, ...) se crea **cuando exista** el código que la justifica. En VS1, `patch`/`graph` viven conceptualmente en `nacre-domain` y `nacre-audio-runtime`; se extraerán cuando su tamaño lo pida (ver ADR-0001).
 
 ### D2 — Toolchain fijado en 1.100.0
 `egui` 0.37 exige MSRV 1.95; fijar 1.100.0 evita sorpresas de compilación y da un entorno reproducible. Se actualiza de forma explícita, no automática.
@@ -54,7 +54,7 @@ El audio en macOS/Windows se valida cuando exista el runtime (VS2/VS5). Añadir 
 `scripts/check-deps.sh` compara `cargo tree` con la lista permitida de `docs/architecture/dependency-graph.md`:
 
 - `nacre-domain` no debe contener `cpal`, `egui`, `serde`.
-- `cpal` solo debe aparecer bajo `nacre-audio`.
+- `cpal` solo debe aparecer bajo `nacre-audio-runtime`.
 - Sin ciclos.
 
 Se ejecuta en CI. Un fallo es un error, no una advertencia.

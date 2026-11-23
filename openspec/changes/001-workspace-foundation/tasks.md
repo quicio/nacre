@@ -21,7 +21,7 @@
   - Verificación: `cargo build -p nacre-application`; `rg "cpal|egui" crates/nacre-application` sin resultados.
 - [ ] 2.3 `crates/nacre-dsp`: `SampleRate`, `BlockSize` con validación y función `apply_gain`.
   - Verificación: test de ganancia unitaria y de rechazo de sample rate 0.
-- [ ] 2.4 `crates/nacre-audio`: `AudioConfig` (sample rate, canales, buffer) con `validate()`.
+- [ ] 2.4 `crates/nacre-audio-runtime`: `AudioConfig` (sample rate, canales, buffer) con `validate()`.
   - Verificación: test de configuración válida (48 kHz, 2 canales, 256) y de buffer 0 rechazado.
 - [ ] 2.5 `apps/nacre-standalone`: `main` que imprime nombre y versión del workspace y el estado "audio: no inicializado".
   - Verificación: `cargo run -p nacre-standalone` imprime la versión y termina con código 0.
@@ -32,7 +32,7 @@
   - Verificación: el workflow es YAML válido (`actionlint` si está disponible) y los comandos son los de `AGENTS.md`.
 - [ ] 3.2 Añadir `deny.toml` con licencias permitidas y `GPL-3.0` denegada.
   - Verificación: `cargo deny check` en verde.
-- [ ] 3.3 Crear `scripts/check-deps.sh` que use `cargo metadata` para comprobar el grafo permitido (domain sin cpal/egui/serde; cpal solo en nacre-audio; sin ciclos).
+- [ ] 3.3 Crear `scripts/check-deps.sh` que use `cargo metadata` para comprobar el grafo permitido (domain sin cpal/egui/serde; cpal solo en nacre-audio-runtime; sin ciclos).
   - Verificación: el script pasa en verde; se prueba a introducir una dependencia prohibida y falla.
 - [ ] 3.4 Añadir `openspec validate --strict` al job `openspec`.
   - Verificación: el comando pasa en local con los changes actuales.

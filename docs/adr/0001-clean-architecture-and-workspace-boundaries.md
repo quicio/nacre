@@ -13,7 +13,7 @@ Nacre debe sobrevivir a cambios de UI, de backend de audio, de host de plugins y
 1. Clean Architecture con cuatro capas conceptuales: Domain, Application, Infrastructure, Presentation.
 2. Las dependencias apuntan hacia adentro. `nacre-domain` no declara dependencias externas salvo `thiserror`.
 3. El audio en tiempo real se trata como una **frontera de runtime**, no como un caso de uso (ver ADR-0002 y ADR-0005).
-4. Se crean solo cinco crates en el primer tramo: `nacre-domain`, `nacre-application`, `nacre-dsp`, `nacre-audio`, `apps/nacre-standalone`. `nacre-persistence` se añade en VS6.
+4. Se crean solo cinco crates en el primer tramo: `nacre-domain`, `nacre-application`, `nacre-dsp`, `nacre-audio-runtime`, `apps/nacre-standalone`. `nacre-persistence` se añade en VS6.
 5. Las reglas de dependencia se verifican en CI, no solo por convención.
 
 ## Alternativas consideradas
@@ -48,6 +48,6 @@ Nacre debe sobrevivir a cambios de UI, de backend de audio, de host de plugins y
 ## Validación
 
 - VS1: el workspace compila con las cinco piezas y un test por crate.
-- VS2: `cpal` solo aparece en `nacre-audio` (`cargo tree -i cpal`).
+- VS2: `cpal` solo aparece en `nacre-audio-runtime` (`cargo tree -i cpal`).
 - VS3: ningún tipo de `egui` en `nacre-dsp` ni en el dominio.
 - VS6: la persistencia no obliga a añadir `serde` al dominio.

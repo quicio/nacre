@@ -27,7 +27,7 @@ Ninguna. Es el primer change con comportamiento.
 
 ## Impacto
 
-- `crates/nacre-audio`: `cpal`, `rtrb`, reloj, comando, `AudioHost` implementado.
+- `crates/nacre-audio-runtime`: `cpal`, `rtrb`, reloj, comando, `AudioHost` implementado.
 - `crates/nacre-dsp`: oscilador seno y utilidades de bloque.
 - `crates/nacre-application`: casos de uso `start_audio`, `stop_audio`, `set_parameter`, `render_offline`.
 - `apps/nacre-standalone`: ventana `eframe` mínima y wiring.

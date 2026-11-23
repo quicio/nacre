@@ -9,7 +9,7 @@ context: |
   - Dirección de dependencias: Presentation -> Application -> Domain. Infrastructure implementa puertos.
   - nacre-domain no usa serde, no hace I/O y no conoce audio, UI ni IA.
   - El callback de audio no asigna memoria, no bloquea, no hace I/O, no compila grafos y no puede entrar en pánico.
-  - cpal solo puede aparecer en el crate de audio (nacre-audio).
+  - cpal solo puede aparecer en el crate de audio (nacre-audio-runtime).
   - Todo cambio de comportamiento se especifica como change de OpenSpec antes de implementarse.
   - Los documentos de producto, arquitectura, ADRs y specs se escriben en español; el código y los identificadores en inglés.
   - Las decisiones no validadas se marcan como hipótesis y se asocian a un spike con criterio de salida.

@@ -28,7 +28,7 @@ Ninguna. `oscillators` sigue existiendo; la voz la usa como base y añade la for
 ## Impacto
 
 - `crates/nacre-dsp`: nuevos módulos `saw`, `adsr`, `svf`, `lfo`, `saturation`, `dc_block`, `voice`.
-- `crates/nacre-audio`: el procesador del callback pasa de seno a voz; nuevos comandos de nota y parámetros.
+- `crates/nacre-audio-runtime`: el procesador del callback pasa de seno a voz; nuevos comandos de nota y parámetros.
 - `apps/nacre-standalone`: controles de voz y gate.
 - `assets/reference/`: tres WAV de referencia (no se versionan si pesan demasiado; ver design).
 - Riesgo principal: aliasing audible y filtro inestable. Mitigación: spike S4 antes de cerrar el slice y tests espectrales.

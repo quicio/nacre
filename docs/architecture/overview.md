@@ -43,7 +43,7 @@ La infraestructura **no** está "debajo" del dominio en el grafo de dependencias
 | Domain | `nacre-domain` | Entidades, value objects, invariantes, errores de dominio, operaciones puras |
 | Application | `nacre-application` | Casos de uso, puertos, transacciones, revisiones, view models de lectura |
 | DSP (interna) | `nacre-dsp` | Unidades DSP puras, sin I/O ni UI; deterministas y testeables offline |
-| Runtime (infra) | `nacre-audio` | Dispositivo, callback, reloj, activación de grafo, transferencia RT |
+| Runtime (infra) | `nacre-audio-runtime` | Dispositivo, callback, reloj, activación de grafo, transferencia RT |
 | Presentation | `apps/nacre-standalone` (+ `nacre-ui` cuando exista el plugin) | Composición de dependencias, ventana, controles |
 
 `nacre-dsp` no es una capa de Clean Architecture: es una **biblioteca de dominio técnico** que no conoce la aplicación ni la UI. Se mantiene separada para poder testearla offline, sin dispositivo, y para aislar `unsafe`/SIMD si llega.
@@ -53,7 +53,7 @@ La infraestructura **no** está "debajo" del dominio en el grafo de dependencias
 ```text
 apps/nacre-standalone ──► nacre-application ──► nacre-domain
         │                        ▲
-        ├──► nacre-audio ────────┘
+        ├──► nacre-audio-runtime ────────┘
         │        │
         │        └──► nacre-dsp ──► nacre-domain (solo tipos compartidos)
         └──► nacre-persistence ──► nacre-application / nacre-domain
@@ -64,8 +64,8 @@ Reglas:
 1. `nacre-domain` no depende de ningún otro crate del workspace ni de crates externos de I/O.
 2. `nacre-application` depende solo de `nacre-domain`.
 3. `nacre-dsp` puede depender de `nacre-domain` para newtypes de parámetros, nunca al revés.
-4. `nacre-audio` depende de `nacre-dsp` y de los *puertos* de `nacre-application`.
-5. La UI depende de `nacre-application`; jamás de `nacre-dsp` ni de `nacre-audio` internals.
+4. `nacre-audio-runtime` depende de `nacre-dsp` y de los *puertos* de `nacre-application`.
+5. La UI depende de `nacre-application`; jamás de `nacre-dsp` ni de `nacre-audio-runtime` internals.
 6. Los adaptadores (persistencia, MCP, MIDI) dependen hacia adentro; nadie depende de ellos salvo la composición.
 
 Ver [dependency-graph.md](dependency-graph.md) para el detalle y las reglas de CI.
@@ -149,7 +149,7 @@ Definidos en `nacre-application`:
 - `Observer`: publicación de mediciones para UI y agente.
 - `AgentGateway`: operaciones tipadas expuestas al agente (implementado por aplicación, consumido por el adaptador MCP).
 
-`nacre-audio` implementa `AudioHost`, `Clock`, `EventSink`, `Renderer` y `Observer`. `nacre-persistence` implementa `PatchRepository`. El adaptador MCP consume `AgentGateway`.
+`nacre-audio-runtime` implementa `AudioHost`, `Clock`, `EventSink`, `Renderer` y `Observer`. `nacre-persistence` implementa `PatchRepository`. El adaptador MCP consume `AgentGateway`.
 
 ## Qué NO cruza la frontera
 

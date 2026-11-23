@@ -21,7 +21,7 @@ Presupuesto por bloque: procesamiento acotado y predecible. El coste no debe dep
 ## Estructura del runtime
 
 ```text
-AudioHost (nacre-audio)
+AudioHost (nacre-audio-runtime)
 ├── DeviceThread          hilo del backend (cpal)
 ├── CommandQueue          SPSC: Control → Audio
 ├── ParameterSlots        atómicos por parámetro (f32 en bits)

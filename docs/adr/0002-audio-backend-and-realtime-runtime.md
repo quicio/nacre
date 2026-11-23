@@ -16,7 +16,7 @@ Datos verificados (2026-11-22):
 
 ## Decisión
 
-1. `cpal` como backend inicial, aislado en `nacre-audio`.
+1. `cpal` como backend inicial, aislado en `nacre-audio-runtime`.
 2. Salida estéreo, `f32`, preferencia 48 kHz; si el dispositivo no lo soporta, se negocia el formato más cercano y se informa.
 3. Buffer objetivo 256 frames (rango 64–1024, configurable). En Linux se probarán ALSA y PipeWire nativo; la elección final depende del spike S1.
 4. El sample rate y el tamaño de bloque son **parámetros del runtime**, no constantes del DSP. Los coeficientes se recalculan al preparar.

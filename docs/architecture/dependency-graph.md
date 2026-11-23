@@ -10,7 +10,7 @@ crates/
 ├── nacre-domain            sin deps internas ni I/O
 ├── nacre-application       → nacre-domain
 ├── nacre-dsp               → nacre-domain (solo newtypes compartidos)
-├── nacre-audio             → nacre-dsp, nacre-application, nacre-domain
+├── nacre-audio-runtime             → nacre-dsp, nacre-application, nacre-domain
 └── nacre-persistence       → nacre-application, nacre-domain   (VS6)
 ```
 
@@ -35,7 +35,7 @@ No se crean crates vacíos "para que exista el sitio". Un crate nuevo requiere: 
             │      │       │
             │      │       └────────────► nacre-persistence ──► nacre-application
             │      │                                                  │
-            │      └────────────► nacre-audio ──► nacre-dsp ──────────┤
+            │      └────────────► nacre-audio-runtime ──► nacre-dsp ──────────┤
             │                        │                                │
             └────────────────────────┴────────────────────────────────┴──► nacre-domain
 ```
@@ -44,9 +44,9 @@ No se crean crates vacíos "para que exista el sitio". Un crate nuevo requiere: 
 
 1. `nacre-domain` no declara dependencias de workspace ni crates de infraestructura.
 2. `nacre-application` solo puede depender de `nacre-domain`.
-3. `nacre-dsp` no puede depender de `nacre-application`, `nacre-audio`, `nacre-persistence`, UI ni red.
-4. `nacre-audio` no puede depender de UI ni de persistencia.
-5. La UI no puede depender de `nacre-dsp` ni de `nacre-audio`.
+3. `nacre-dsp` no puede depender de `nacre-application`, `nacre-audio-runtime`, `nacre-persistence`, UI ni red.
+4. `nacre-audio-runtime` no puede depender de UI ni de persistencia.
+5. La UI no puede depender de `nacre-dsp` ni de `nacre-audio-runtime`.
 6. Ningún crate puede depender de `apps/*`.
 7. Sin ciclos, ni directos ni transitivos.
 8. `serde` no entra en `nacre-domain`; la persistencia usa DTOs propios.
@@ -60,7 +60,7 @@ Estas reglas se comprueban en CI con `cargo tree` y un test de dependencias (p. 
 | `nacre-domain` | `thiserror` | Sin `serde`, sin `rand` |
 | `nacre-application` | `thiserror` | Puertos y casos de uso |
 | `nacre-dsp` | `libm` (opcional) | Sin `cpal`, sin `egui` |
-| `nacre-audio` | `cpal`, `rtrb`, `atomic_float` (o atómicos propios) | `cpal` solo aquí |
+| `nacre-audio-runtime` | `cpal`, `rtrb`, `atomic_float` (o atómicos propios) | `cpal` solo aquí |
 | `nacre-persistence` | `serde`, `serde_json`, `toml` | DTOs versionados |
 | `nacre-standalone` | `eframe`, `egui`, `env_logger` | UI y wiring |
 | `nacre-agent-mcp` | SDK MCP | Adaptador aislado |
@@ -93,7 +93,7 @@ nacre/
 │   ├── nacre-domain/
 │   ├── nacre-application/
 │   ├── nacre-dsp/
-│   ├── nacre-audio/
+│   ├── nacre-audio-runtime/
 │   └── nacre-persistence/
 ├── assets/
 │   ├── presets/

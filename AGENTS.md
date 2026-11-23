@@ -12,18 +12,22 @@ Nacre es un instrumento musical generativo en Rust: un motor de audio y composic
 
 Antes de implementar, lee `HANDOFF.md` (estado real), `openspec/list` y la spec del change activo. Si el change no existe o no está validado, **no implementes**: propón primero.
 
+### Crates del change 001
+
+El 001 crea **cinco** paquetes y ningún otro: `crates/nacre-domain`, `crates/nacre-application`, `crates/nacre-dsp`, `crates/nacre-audio-runtime` y `apps/nacre-standalone` (package `nacre-standalone`). `nacre-ui`, `nacre-generative`, `nacre-persistence` y `nacre-agent-*` no existen todavía y no deben crearse en este change.
+
 ## Flujo de trabajo obligatorio
 
 1. Un cambio = un *change* de OpenSpec. Nada de código sin artefactos revisados.
 2. Orden: `proposal.md` → `specs/<capability>/spec.md` → `design.md` → `tasks.md` → implementación.
 3. Implementa **solo** las tareas de `tasks.md` del change activo, marcándolas al completarlas.
 4. No implementes funcionalidad de changes futuros, aunque aparezca en el roadmap.
-5. Al terminar todas las tareas: `openspec validate --strict`, tests verdes, y proponer archivar (no archivar sin revisión humana).
+5. Al terminar todas las tareas: `openspec validate --all --strict`, tests verdes, y proponer archivar (no archivar sin revisión humana).
 
 ```bash
 openspec list
 openspec show <change> --json
-openspec validate --strict
+openspec validate --all --strict
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
 cargo fmt --all --check

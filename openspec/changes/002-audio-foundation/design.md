@@ -45,7 +45,7 @@ impl SineOscillator {
 - `process` procesa un bloque mono; el runtime lo replica a estéreo (sin coste de DSP duplicado).
 - Saneado: si `gain` no es finito, se usa 0.
 
-### `nacre-audio`
+### `nacre-audio-runtime`
 
 ```rust
 pub struct AudioConfig { sample_rate: u32, channels: u16, buffer_frames: u32 }
@@ -81,7 +81,7 @@ pub struct StartAudio { host: Box<dyn AudioHostPort> }
 impl StartAudio { pub fn execute(&mut self) -> Result<AudioStatus, AppError>; }
 ```
 
-El trait es el puerto; `nacre-audio` lo implementa. La app compone.
+El trait es el puerto; `nacre-audio-runtime` lo implementa. La app compone.
 
 ### `apps/nacre-standalone`
 
@@ -132,7 +132,7 @@ El fade de 20 ms se implementa como ramp de ganancia en el callback tras recibir
 
 ```bash
 cargo test -p nacre-dsp        # frecuencia, fase, ganancia
-cargo test -p nacre-audio      # config, cola, snapshot, render offline
+cargo test -p nacre-audio-runtime      # config, cola, snapshot, render offline
 cargo run -p nacre-standalone  # comprobación manual: Play/Stop/ganancia
 cargo clippy --workspace --all-targets -- -D warnings
 ```

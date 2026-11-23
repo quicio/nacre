@@ -28,7 +28,7 @@ Ninguna formalmente: `audio-runtime` y `voice-synthesis` conservan sus requisito
 - `crates/nacre-domain`: `ParameterId`, `ParameterSpec`, `ParameterValue`, `ParameterError`, curvas.
 - `crates/nacre-application`: tabla de parámetros, casos de uso `set_parameter`, `list_parameters`, `get_snapshot`.
 - `crates/nacre-dsp`: `Smoother` genérico, parámetros de voz migrados.
-- `crates/nacre-audio`: ruta única de comandos, slots atómicos con coalescing, snapshot.
+- `crates/nacre-audio-runtime`: ruta única de comandos, slots atómicos con coalescing, snapshot.
 - `apps/nacre-standalone`: controles generados desde la tabla de parámetros en lugar de campos ad-hoc.
 - Riesgo principal: que la abstracción añada coste o complejidad innecesaria en el callback. Mitigación: la ruta de audio sigue siendo un slot atómico + smoother; la tabla vive fuera del audio.
 

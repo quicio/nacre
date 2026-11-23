@@ -6,7 +6,7 @@ Sin un workspace con límites verificables, el primer código de audio acabará 
 
 ## Qué cambia
 
-- Workspace Cargo con cinco piezas reales: `nacre-domain`, `nacre-application`, `nacre-dsp`, `nacre-audio`, `apps/nacre-standalone`.
+- Workspace Cargo con cinco piezas reales: `nacre-domain`, `nacre-application`, `nacre-dsp`, `nacre-audio-runtime`, `apps/nacre-standalone`.
 - Toolchain fijado (Rust 1.100.0, edición 2024) y lints de workspace.
 - CI mínima en Linux: `fmt`, `clippy -D warnings`, `test`, `build`, validación de OpenSpec y `cargo deny`.
 - Script de verificación del grafo de dependencias permitido.
