@@ -1,6 +1,6 @@
 # ADR-0002 — Backend de audio y runtime en tiempo real
 
-**Estado:** Accepted (sujeto a validación por spike S1)
+**Estado:** Accepted para ALSA sobre PipeWire a 48 kHz / 256 frames (medido 2026-11-23). Pendiente el gate de 30 min y la comparación con PipeWire nativo y JACK.
 **Fecha:** 2026-11-22
 
 ## Contexto
@@ -55,4 +55,19 @@ Datos verificados (2026-11-22):
 
 ## Validación (spike S1)
 
-Criterio de salida: 30 minutos de reproducción continua a 48 kHz/256 frames en el equipo de desarrollo con **0 xruns** y sin allocaciones en el callback; documentar latencia medida y comportamiento en ALSA vs PipeWire nativo vs JACK. Si no se cumple, se reevalúa el backend antes de implementar el resto del slice.
+Medido el 2026-11-23 en este equipo (CachyOS, PipeWire 1.x, `cpal` 0.18.2, usuario en `audio` con `rtprio` 99). Probe desechable, fuera del workspace.
+
+| Qué | Resultado |
+|---|---|
+| Hosts compilados por defecto | Solo `Alsa`. `pipewire` y `jack` son features opcionales, no vienen en `default = []` |
+| Dispositivo | `Default Audio Device`. El rango anunciado (1–384 000 Hz, buffer 16–262 144) es el virtual de PipeWire, no el de la tarjeta |
+| `BufferSize::Fixed(256)`, 48 kHz, f32, estéreo | Aceptado |
+| 45 s de seno a 440 Hz | 8436 callbacks frente a 8438 esperados (ratio 1.000). Los 2 que faltan caben en el arranque |
+| Callback más lento | 59 µs, contra un presupuesto de 5333 µs. Cero callbacks por encima del presupuesto |
+| Xruns del kernel | No medidos. `cpal` no expone `snd_pcm_status`; el error callback no se disparó |
+| Latencia impulso→salida | No medida |
+| 30 min, PipeWire nativo, JACK | Pendientes |
+
+Conclusión provisional: en este equipo el camino de producción es ALSA a través de PipeWire, no ALSA directo. 256 frames a 48 kHz se sostiene en una pasada corta con margen de CPU de ~90×. Eso no cierra el criterio de 30 min ni autoriza a tratar PipeWire nativo o JACK como equivalentes.
+
+Hecho de API para el change 002: en `cpal` 0.18 `SampleRate` es un alias de `u32`, el dispositivo se nombra por `Display`, y `build_output_stream` toma el `StreamConfig` por valor con el formato de muestra como parámetro de tipo. Los dos callbacks tienen que ser `'static`.

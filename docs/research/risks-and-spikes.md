@@ -12,7 +12,7 @@
 
 | # | Riesgo | Prob. | Impacto | Spike | Estado |
 |---|---|---|---|---|---|
-| R1 | El callback de audio no es realmente libre de alloc/locks/bloqueos | Alta | Crítico | S1, S2 | Pendiente |
+| R1 | El callback de audio no es realmente libre de alloc/locks/bloqueos | Alta | Crítico | S1, S2 | S2 medido; S1 parcial |
 | R2 | El timing generativo suena mal por jitter o cuantización | Media | Crítico | S7 | Pendiente (M2) |
 | R3 | Reemplazo de grafo con clicks o picos de CPU | Alta | Alto | S3 | Pendiente |
 | R4 | El DSP suena genérico o con aliasing audible | Media | Crítico | S4 | Pendiente |
@@ -41,6 +41,8 @@
 
 **Desbloquea:** ADR-0002 (backend definitivo), VS2.
 
+**Medido el 2026-11-23 (parcial).** `cpal` 0.18.2 con features por defecto solo expone ALSA; en este equipo ese ALSA es el plugin de PipeWire. `BufferSize::Fixed(256)` a 48 kHz f32 estéreo fue aceptado. En 45 s: 8436/8438 callbacks (ratio 1.000), callback máximo 59 µs sobre 5333 µs de presupuesto, cero callbacks lentos. No se midieron xruns del kernel, ni latencia impulso→salida, ni 30 min, ni PipeWire nativo, ni JACK. El gate de 30 min sigue abierto. Detalle en ADR-0002.
+
 ### S2 — Transferencia de parámetros y comandos sin locks
 
 **Pregunta:** ¿el camino UI → audio cumple el contrato de tiempo real?
@@ -54,6 +56,8 @@
 **Criterio de salida:** 0 asignaciones y 0 bloqueos en el callback; cambio aplicado en ≤ 2 bloques; sin clicks audibles. **Timebox:** 2 días.
 
 **Desbloquea:** VS2, VS4.
+
+**Medido el 2026-11-23: pasa el contrato de carga.** 100 000 comandos en 10 s (10 000/s) por un ring SPSC de `rtrb` 0.4.1 con 256 slots, publicados en 64 atómicos. Cero rechazos, profundidad máxima 60, latencia máxima 5,94 ms y p99 5,36 ms, contra un bloque de 5,33 ms. El consumidor solo hace `pop` y stores atómicos. Los «cero alloc / cero locks» son por construcción del probe, no por un allocator instrumentado; eso queda como test del change 002, donde el callback es real.
 
 ### S3 — Reemplazo de grafo y crossfade
 
