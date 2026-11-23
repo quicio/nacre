@@ -123,6 +123,11 @@ runtime_id = workspace["nacre-audio-runtime"]
 for name, dependency_names in direct_package_names.items():
     if name != "nacre-audio-runtime" and "cpal" in dependency_names:
         errors.add(f"{name} must not depend directly on cpal")
+    if name != "nacre-audio-runtime" and "rtrb" in dependency_names:
+        errors.add(f"{name} must not depend directly on rtrb")
+    if name != "nacre-standalone" and ({"egui", "eframe"} & dependency_names):
+        found = ", ".join(sorted({"egui", "eframe"} & dependency_names))
+        errors.add(f"{name} must not depend directly on {found}")
 
 for name, package_id in workspace.items():
     if package_id == runtime_id:
