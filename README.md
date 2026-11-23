@@ -104,9 +104,9 @@ La identidad visual está documentada en [DESIGN.md](DESIGN.md); el brief de pro
 
 - Rust 1.100.0 (fijado en `rust-toolchain.toml`, edición 2024).
 - `cargo-deny` 0.22.0 y `actionlint` 1.7.12 para los controles locales.
-- Linux con ALSA/PipeWire; macOS CoreAudio; Windows WASAPI (soporte de audio a validar en CI cuando exista el runtime).
+- Linux: `pkg-config`, `libpipewire-0.3-dev` y `libasound2-dev`. El host de producción es PipeWire nativo; ALSA es el respaldo. macOS usa CoreAudio y Windows WASAPI; esos hosts no están medidos.
 - OpenSpec CLI 2.1+ (solo para el flujo de specs, no para compilar).
 
 ## Licencia
 
-Por definir (ADR pendiente antes de publicar el repositorio). Ver `docs/adr/0001-*.md` y la nota de licencia en `docs/research/dependency-evaluation.md`.
+Por definir. El repositorio es público en `quicio/nacre`, pero no hay archivo `LICENSE` todavía. Decidirla antes de distribuir binarios o un plugin. Ver `docs/adr/0003-standalone-and-plugin-strategy.md`.
