@@ -1,8 +1,27 @@
 //! Pure digital signal processing building blocks.
 
+mod adsr;
+mod dc_block;
+mod lfo;
+mod saturation;
+mod saw;
+mod svf;
+mod voice;
+
+#[cfg(test)]
+mod test_fft;
+
 use std::f64::consts::TAU;
 
 use thiserror::Error;
+
+pub use adsr::{Adsr, AdsrParams, AdsrStage};
+pub use dc_block::DcBlocker;
+pub use lfo::{Lfo, LfoWaveform};
+pub use saturation::Saturation;
+pub use saw::SawOscillator;
+pub use svf::Svf;
+pub use voice::{HEADROOM_GAIN, LfoDestination, Voice, VoiceParams, Waveform};
 
 const DEFAULT_SAMPLE_RATE_HZ: f32 = 48_000.0;
 const DEFAULT_FREQUENCY_HZ: f32 = 440.0;
@@ -149,6 +168,72 @@ impl SineOscillator {
                 self.phase += 1.0;
             }
         }
+    }
+
+    /// Fills a mono block while gliding linearly to `end_frequency_hz`.
+    ///
+    /// The phase and the gain behaviour are the same as [`Self::process`]; only
+    /// the frequency increment is interpolated across the block, so block-rate
+    /// pitch modulation does not step.
+    pub fn process_glide(&mut self, out: &mut [f32], gain: f32, end_frequency_hz: f32) {
+        let gain = if gain.is_finite() {
+            gain.clamp(0.0, 1.0)
+        } else {
+            0.0
+        };
+        let silent = gain <= 0.0;
+        let end_frequency_hz =
+            sanitize_frequency(end_frequency_hz, self.sample_rate_hz, self.frequency_hz);
+        let target_increment = f64::from(end_frequency_hz) / f64::from(self.sample_rate_hz);
+        let target_increment = if target_increment.is_finite() && target_increment > 0.0 {
+            target_increment
+        } else {
+            0.0
+        };
+        let step = if out.len() > 1 {
+            (target_increment - self.phase_increment) / out.len() as f64
+        } else {
+            0.0
+        };
+
+        for sample in out.iter_mut() {
+            let value = if silent {
+                0.0
+            } else {
+                let raw = (TAU * self.phase).sin() as f32 * gain;
+                if raw.is_finite() {
+                    raw.clamp(-1.0, 1.0)
+                } else {
+                    0.0
+                }
+            };
+            *sample = value;
+
+            self.phase += self.phase_increment;
+            if self.phase >= 1.0 {
+                self.phase -= 1.0;
+            } else if self.phase < 0.0 {
+                self.phase += 1.0;
+            }
+            self.phase_increment += step;
+        }
+
+        self.phase_increment = target_increment;
+        self.frequency_hz = end_frequency_hz;
+    }
+
+    /// Returns the current normalised phase.
+    pub const fn phase(&self) -> f64 {
+        self.phase
+    }
+
+    /// Overwrites the phase, for waveform switches that keep phase continuity.
+    pub fn set_phase(&mut self, phase: f64) {
+        self.phase = if phase.is_finite() {
+            phase.rem_euclid(1.0)
+        } else {
+            0.0
+        };
     }
 
     /// Resets the phase to zero at the next block boundary.

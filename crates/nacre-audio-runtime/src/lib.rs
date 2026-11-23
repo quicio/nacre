@@ -8,6 +8,7 @@ mod command;
 mod host;
 mod offline;
 mod processor;
+mod reference;
 mod sanitize;
 mod shared;
 mod wav;
@@ -15,6 +16,10 @@ mod wav;
 pub use host::AudioHost;
 pub use nacre_application::{AudioConfig, ParameterCommand as Command};
 pub use offline::{OfflineRenderer, hash_samples};
+pub use reference::{
+    REFERENCE_DURATION_SECONDS, ReferenceError, ReferencePatch, render_reference,
+    write_reference_wav,
+};
 pub use wav::{WavError, write_wav_f32};
 
 /// Snapshot type published by the runtime.

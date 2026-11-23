@@ -6,14 +6,30 @@
 
 use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, Ordering};
 
-use nacre_application::AudioHealth;
+use nacre_application::{AudioHealth, VoiceParameter};
 use nacre_domain::SampleTime;
 
-use crate::sanitize::{sanitize_frequency_hz, sanitize_gain};
+use crate::sanitize::{
+    DEFAULT_ATTACK_MS, DEFAULT_DECAY_MS, DEFAULT_DRIVE_DB, DEFAULT_FILTER_CUTOFF_HZ,
+    DEFAULT_FILTER_RESONANCE, DEFAULT_LFO_DEPTH_PERCENT, DEFAULT_LFO_RATE_HZ, DEFAULT_RELEASE_MS,
+    DEFAULT_SUSTAIN, sanitize_frequency_hz, sanitize_gain, sanitize_voice_parameter,
+};
 
 pub(crate) struct SharedState {
     frequency_hz_bits: AtomicU32,
     gain_bits: AtomicU32,
+    waveform: AtomicU32,
+    lfo_shape: AtomicU32,
+    lfo_destination: AtomicU32,
+    filter_cutoff_bits: AtomicU32,
+    filter_resonance_bits: AtomicU32,
+    attack_ms_bits: AtomicU32,
+    decay_ms_bits: AtomicU32,
+    sustain_bits: AtomicU32,
+    release_ms_bits: AtomicU32,
+    lfo_rate_bits: AtomicU32,
+    lfo_depth_bits: AtomicU32,
+    drive_db_bits: AtomicU32,
     frames: AtomicU64,
     xruns: AtomicU32,
     dropped_commands: AtomicU32,
@@ -29,6 +45,18 @@ impl SharedState {
         Self {
             frequency_hz_bits: AtomicU32::new(sanitize_frequency_hz(frequency_hz).to_bits()),
             gain_bits: AtomicU32::new(sanitize_gain(linear_gain).to_bits()),
+            waveform: AtomicU32::new(0),
+            lfo_shape: AtomicU32::new(0),
+            lfo_destination: AtomicU32::new(0),
+            filter_cutoff_bits: AtomicU32::new(DEFAULT_FILTER_CUTOFF_HZ.to_bits()),
+            filter_resonance_bits: AtomicU32::new(DEFAULT_FILTER_RESONANCE.to_bits()),
+            attack_ms_bits: AtomicU32::new(DEFAULT_ATTACK_MS.to_bits()),
+            decay_ms_bits: AtomicU32::new(DEFAULT_DECAY_MS.to_bits()),
+            sustain_bits: AtomicU32::new(DEFAULT_SUSTAIN.to_bits()),
+            release_ms_bits: AtomicU32::new(DEFAULT_RELEASE_MS.to_bits()),
+            lfo_rate_bits: AtomicU32::new(DEFAULT_LFO_RATE_HZ.to_bits()),
+            lfo_depth_bits: AtomicU32::new(DEFAULT_LFO_DEPTH_PERCENT.to_bits()),
+            drive_db_bits: AtomicU32::new(DEFAULT_DRIVE_DB.to_bits()),
             frames: AtomicU64::new(0),
             xruns: AtomicU32::new(0),
             dropped_commands: AtomicU32::new(0),
@@ -69,6 +97,57 @@ impl SharedState {
     pub(crate) fn set_gain(&self, linear_gain: f32) {
         let value = sanitize_gain(linear_gain);
         self.gain_bits.store(value.to_bits(), Ordering::Relaxed);
+    }
+
+    /// Waveform code: 0 = saw, 1 = sine.
+    pub(crate) fn waveform(&self) -> u32 {
+        self.waveform.load(Ordering::Relaxed)
+    }
+
+    pub(crate) fn set_waveform(&self, waveform: u32) {
+        self.waveform.store(waveform, Ordering::Relaxed);
+    }
+
+    /// LFO shape code: 0 = sine, 1 = triangle.
+    pub(crate) fn lfo_shape(&self) -> u32 {
+        self.lfo_shape.load(Ordering::Relaxed)
+    }
+
+    pub(crate) fn set_lfo_shape(&self, shape: u32) {
+        self.lfo_shape.store(shape, Ordering::Relaxed);
+    }
+
+    /// LFO destination code: 0 = cutoff, 1 = pitch.
+    pub(crate) fn lfo_destination(&self) -> u32 {
+        self.lfo_destination.load(Ordering::Relaxed)
+    }
+
+    pub(crate) fn set_lfo_destination(&self, destination: u32) {
+        self.lfo_destination.store(destination, Ordering::Relaxed);
+    }
+
+    pub(crate) fn voice_parameter(&self, parameter: VoiceParameter) -> f32 {
+        f32::from_bits(self.voice_slot(parameter).load(Ordering::Relaxed))
+    }
+
+    pub(crate) fn set_voice_parameter(&self, parameter: VoiceParameter, value: f32) {
+        let sanitized = sanitize_voice_parameter(parameter, value);
+        self.voice_slot(parameter)
+            .store(sanitized.to_bits(), Ordering::Relaxed);
+    }
+
+    fn voice_slot(&self, parameter: VoiceParameter) -> &AtomicU32 {
+        match parameter {
+            VoiceParameter::FilterCutoff => &self.filter_cutoff_bits,
+            VoiceParameter::FilterResonance => &self.filter_resonance_bits,
+            VoiceParameter::Attack => &self.attack_ms_bits,
+            VoiceParameter::Decay => &self.decay_ms_bits,
+            VoiceParameter::Sustain => &self.sustain_bits,
+            VoiceParameter::Release => &self.release_ms_bits,
+            VoiceParameter::LfoRate => &self.lfo_rate_bits,
+            VoiceParameter::LfoDepth => &self.lfo_depth_bits,
+            VoiceParameter::Drive => &self.drive_db_bits,
+        }
     }
 
     pub(crate) fn add_frames(&self, frames: u64) {
@@ -144,9 +223,11 @@ mod tests {
     use std::sync::Arc;
     use std::thread;
 
+    use nacre_application::VoiceParameter;
     use nacre_domain::SampleTime;
 
     use super::SharedState;
+    use crate::sanitize::DEFAULT_ATTACK_MS;
 
     #[test]
     fn parameter_slots_cross_threads_without_unsafe() {
@@ -172,6 +253,29 @@ mod tests {
 
         assert_eq!(shared.frequency_hz(), 440.0);
         assert_eq!(shared.gain(), 0.0);
+    }
+
+    #[test]
+    fn voice_parameter_slots_are_sanitized_independently() {
+        let shared = SharedState::new(440.0, 0.5);
+
+        shared.set_voice_parameter(VoiceParameter::FilterCutoff, 100_000.0);
+        shared.set_voice_parameter(VoiceParameter::Attack, f32::NAN);
+        shared.set_waveform(1);
+        shared.set_lfo_destination(1);
+        shared.set_lfo_shape(1);
+
+        assert_eq!(
+            shared.voice_parameter(VoiceParameter::FilterCutoff),
+            20_000.0
+        );
+        assert_eq!(
+            shared.voice_parameter(VoiceParameter::Attack),
+            DEFAULT_ATTACK_MS
+        );
+        assert_eq!(shared.waveform(), 1);
+        assert_eq!(shared.lfo_destination(), 1);
+        assert_eq!(shared.lfo_shape(), 1);
     }
 
     #[test]

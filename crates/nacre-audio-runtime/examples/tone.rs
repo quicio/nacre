@@ -28,7 +28,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         status.negotiated,
     );
 
+    host.submit(ParameterCommand::NoteOn {
+        frequency_hz: 440.0,
+    })?;
+
     thread::sleep(Duration::from_secs(2));
+    host.submit(ParameterCommand::NoteOff)?;
     host.stop();
     println!("stopped");
     Ok(())

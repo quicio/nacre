@@ -17,6 +17,7 @@ use nacre_application::{
 
 use crate::command::{CommandSender, command_queue};
 use crate::processor::AudioProcessor;
+use crate::sanitize::{lfo_destination_code, lfo_shape_code, waveform_code};
 use crate::shared::SharedState;
 
 /// How long the control thread waits for the callback to finish its fade-out.
@@ -149,7 +150,8 @@ impl AudioHost {
     /// Submits a command without blocking.
     ///
     /// Parameter changes are stored even while stopped so the next start uses
-    /// the latest UI values. Transport commands require an active stream.
+    /// the latest UI values. Transport commands and notes require an active
+    /// stream.
     pub fn submit(&self, command: ParameterCommand) -> Result<(), CommandError> {
         match command {
             ParameterCommand::SetFrequency { frequency_hz } => {
@@ -172,7 +174,51 @@ impl AudioHost {
                     }
                 }
             }
-            ParameterCommand::Start | ParameterCommand::Stop => {
+            ParameterCommand::SetVoiceParameter { parameter, value } => {
+                let mut producer = self.producer_mut();
+                match producer.as_mut() {
+                    Some(sender) => self.submit_to_queue(sender, command),
+                    None => {
+                        self.shared.set_voice_parameter(parameter, value);
+                        Ok(())
+                    }
+                }
+            }
+            ParameterCommand::SetWaveform { waveform } => {
+                let mut producer = self.producer_mut();
+                match producer.as_mut() {
+                    Some(sender) => self.submit_to_queue(sender, command),
+                    None => {
+                        self.shared.set_waveform(waveform_code(waveform));
+                        Ok(())
+                    }
+                }
+            }
+            ParameterCommand::SetLfoShape { shape } => {
+                let mut producer = self.producer_mut();
+                match producer.as_mut() {
+                    Some(sender) => self.submit_to_queue(sender, command),
+                    None => {
+                        self.shared.set_lfo_shape(lfo_shape_code(shape));
+                        Ok(())
+                    }
+                }
+            }
+            ParameterCommand::SetLfoDestination { destination } => {
+                let mut producer = self.producer_mut();
+                match producer.as_mut() {
+                    Some(sender) => self.submit_to_queue(sender, command),
+                    None => {
+                        self.shared
+                            .set_lfo_destination(lfo_destination_code(destination));
+                        Ok(())
+                    }
+                }
+            }
+            ParameterCommand::NoteOn { .. }
+            | ParameterCommand::NoteOff
+            | ParameterCommand::Start
+            | ParameterCommand::Stop => {
                 let mut producer = self.producer_mut();
                 match producer.as_mut() {
                     Some(sender) => self.submit_to_queue(sender, command),
