@@ -41,7 +41,7 @@
 
 **Desbloquea:** ADR-0002 (backend definitivo), VS2.
 
-**Medido el 2026-11-23 (parcial).** `cpal` 0.18.2 con features por defecto solo expone ALSA; en este equipo ese ALSA es el plugin de PipeWire. `BufferSize::Fixed(256)` a 48 kHz f32 estéreo fue aceptado. En 45 s: 8436/8438 callbacks (ratio 1.000), callback máximo 59 µs sobre 5333 µs de presupuesto, cero callbacks lentos. No se midieron xruns del kernel, ni latencia impulso→salida, ni 30 min, ni PipeWire nativo, ni JACK. El gate de 30 min sigue abierto. Detalle en ADR-0002.
+**Medido el 2026-11-23 (parcial).** `cpal` 0.18.2 con features por defecto solo expone ALSA; en este equipo ese ALSA es el plugin de PipeWire. `BufferSize::Fixed(256)` a 48 kHz f32 estéreo fue aceptado. En 45 s: 8436/8438 callbacks (ratio 1.000), callback máximo 59 µs sobre 5333 µs de presupuesto, cero callbacks lentos. La feature `pipewire` compila contra `libpipewire-0.3` (crate `pipewire` 0.10.1) pero no se ejecutó: la medición de 30 min ocupa el dispositivo. No se midieron xruns del kernel, ni latencia impulso→salida, ni JACK (no hay `jackd`). El gate de 30 min sigue abierto. Detalle en ADR-0002.
 
 ### S2 — Transferencia de parámetros y comandos sin locks
 

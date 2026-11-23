@@ -66,7 +66,7 @@ Medido el 2026-11-23 en este equipo (CachyOS, PipeWire 1.x, `cpal` 0.18.2, usuar
 | Callback más lento | 59 µs, contra un presupuesto de 5333 µs. Cero callbacks por encima del presupuesto |
 | Xruns del kernel | No medidos. `cpal` no expone `snd_pcm_status`; el error callback no se disparó |
 | Latencia impulso→salida | No medida |
-| 30 min, PipeWire nativo, JACK | Pendientes |
+| 30 min, PipeWire nativo, JACK | 30 min en curso sobre ALSA. La feature `pipewire` de `cpal` compila (crate `pipewire` 0.10.1, `libpipewire-0.3` presente); no se ejecutó para no interferir con esa medición. JACK no está corriendo |
 
 Conclusión provisional: en este equipo el camino de producción es ALSA a través de PipeWire, no ALSA directo. 256 frames a 48 kHz se sostiene en una pasada corta con margen de CPU de ~90×. Eso no cierra el criterio de 30 min ni autoriza a tratar PipeWire nativo o JACK como equivalentes.
 
