@@ -4,7 +4,7 @@
 
 ## Última actualización
 
-**2026-11-23** — Change `002-audio-foundation` implementado y verificado. Primer audio real: dispositivo, callback, seno, comandos, render offline y ventana mínima. Pendiente de revisión humana y de `openspec archive`.
+**2026-11-23** — Change `002-audio-foundation` archivado. El ejemplo `tone` arrancó en el host nativo PipeWire (48 kHz, 256 frames, `negotiated=false`) y paró solo.
 
 ## Qué existe
 
@@ -61,7 +61,9 @@ No se reprodujo audio durante 30 minutos: el gate de 30 min se documenta con la 
 
 ## Change activo
 
-**`002-audio-foundation`** — implementado (20/20 tareas), gates en verde, pendiente de revisión humana y de `openspec archive`. No archivar sin esa revisión.
+**`003-voice-synthesis`** — especificado, no implementado. El 002 está archivado; este es el siguiente change.
+
+El change `002-audio-foundation` está archivado (`openspec/changes/archive/2026-11-23-002-audio-foundation`). Las capacidades construidas viven en `openspec/specs/`: `audio-runtime` (6), `oscillators` (4), `standalone-app` (4).
 
 El change `001-workspace-foundation` está archivado (`openspec/changes/archive/2026-11-23-001-workspace-foundation`).
 
@@ -70,8 +72,8 @@ El change `001-workspace-foundation` está archivado (`openspec/changes/archive/
 | Change | Artefactos | Implementado | Notas |
 |---|---|---|---|
 | `001-workspace-foundation` | proposal, design, tasks | Sí (2026-11-23) | Archivado |
-| `002-audio-foundation` | proposal, specs, design, tasks | Sí (2026-11-23) | 20/20 tareas. Gates reejecutados en la revisión: fmt, clippy, 40 tests, `check-deps`, `cargo deny`. Pendiente de archivar |
-| `003-voice-synthesis` | proposal, specs, design, tasks | No | Bloqueado por 002 |
+| `002-audio-foundation` | proposal, specs, design, tasks | Sí (2026-11-23) | Archivado. Specs en `openspec/specs/` |
+| `003-voice-synthesis` | proposal, specs, design, tasks | No | Siguiente. No empezado |
 | `004-parameter-system` | proposal, specs, design, tasks | No | Bloqueado por 003 |
 
 ## Decisiones y desviaciones registradas
