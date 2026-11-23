@@ -248,7 +248,7 @@ export const COPY = {
     },
     hero: {
       kicker: 'Generative musical instrument',
-      titleA: "Don't program",
+      titleA: 'Don’t program',
       titleB: 'songs.',
       titleC: 'Create systems.',
       lede: 'A generative instrument written in Rust: layers, seeds and evolution with a sonic identity of its own.',
