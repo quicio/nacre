@@ -51,7 +51,7 @@ El change `001-workspace-foundation` está implementado y verificado, pendiente 
 ## Decisiones abiertas (no inventar certeza)
 
 1. **Licencia del proyecto.** Sin decidir. `nih-plug` es ISC, `cpal` Apache-2.0, `fundsp` MIT/Apache-2.0: compatibles entre sí, pero la licencia del producto (¿MIT? ¿Apache? ¿propietaria?) debe decidirse antes de publicar.
-2. **Backend de audio en Linux.** Medido a medias (ADR-0002): ALSA sobre PipeWire acepta 48 kHz / 256 frames y se sostiene 45 s. Faltan el gate de 30 min, PipeWire nativo y JACK.
+2. **Backend de audio en Linux.** ALSA sobre PipeWire sostiene 48 kHz / 256 frames durante 30 min (ADR-0002). Faltan la pasada con PipeWire nativo y JACK.
 3. **PolyBLEP vs oversampling** para saw. Spike S4.
 4. **Formato de patch**: JSON legible vs binario compacto vs ambos con versión. Ver ADR-0008.
 5. **Alcance del plugin**: VST3 primero, CLAP después (o simultáneos). Depende del spike S5.

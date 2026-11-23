@@ -63,11 +63,12 @@ Medido el 2026-11-23 en este equipo (CachyOS, PipeWire 1.x, `cpal` 0.18.2, usuar
 | Dispositivo | `Default Audio Device`. El rango anunciado (1–384 000 Hz, buffer 16–262 144) es el virtual de PipeWire, no el de la tarjeta |
 | `BufferSize::Fixed(256)`, 48 kHz, f32, estéreo | Aceptado |
 | 45 s de seno a 440 Hz | 8436 callbacks frente a 8438 esperados (ratio 1.000). Los 2 que faltan caben en el arranque |
-| Callback más lento | 59 µs, contra un presupuesto de 5333 µs. Cero callbacks por encima del presupuesto |
+| 30 min, mismo stream | 337 517 callbacks frente a 337 500 esperados (ratio 1.000). 17 de más, no de menos: unos 91 ms de deriva de reloj en media hora, no bloques perdidos |
+| Callback más lento | 59 µs en 45 s; 459 µs en 30 min. Presupuesto 5333 µs. Cero callbacks por encima del presupuesto en ambas pasadas |
 | Xruns del kernel | No medidos. `cpal` no expone `snd_pcm_status`; el error callback no se disparó |
 | Latencia impulso→salida | No medida |
-| 30 min, PipeWire nativo, JACK | 30 min en curso sobre ALSA. La feature `pipewire` de `cpal` compila (crate `pipewire` 0.10.1, `libpipewire-0.3` presente); no se ejecutó para no interferir con esa medición. JACK no está corriendo |
+| 30 min, PipeWire nativo, JACK | Gate de 30 min cumplido en ALSA sobre PipeWire (ver fila anterior). La feature `pipewire` compila; la pasada comparativa está por ejecutarse. JACK no está corriendo |
 
-Conclusión provisional: en este equipo el camino de producción es ALSA a través de PipeWire, no ALSA directo. 256 frames a 48 kHz se sostiene en una pasada corta con margen de CPU de ~90×. Eso no cierra el criterio de 30 min ni autoriza a tratar PipeWire nativo o JACK como equivalentes.
+Conclusión provisional: en este equipo el camino de producción es ALSA a través de PipeWire, no ALSA directo. 256 frames a 48 kHz se sostiene 30 min sin callbacks lentos y sin bloques perdidos, con el peor callback a 459 µs de 5333 µs. Eso cierra el gate de duración para este backend. No cierra la comparación con PipeWire nativo ni con JACK, ni sustituye un contador de xruns del kernel.
 
 Hecho de API para el change 002: en `cpal` 0.18 `SampleRate` es un alias de `u32`, el dispositivo se nombra por `Display`, y `build_output_stream` toma el `StreamConfig` por valor con el formato de muestra como parámetro de tipo. Los dos callbacks tienen que ser `'static`.

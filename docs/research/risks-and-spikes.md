@@ -12,7 +12,7 @@
 
 | # | Riesgo | Prob. | Impacto | Spike | Estado |
 |---|---|---|---|---|---|
-| R1 | El callback de audio no es realmente libre de alloc/locks/bloqueos | Alta | Crítico | S1, S2 | S2 medido; S1 parcial |
+| R1 | El callback de audio no es realmente libre de alloc/locks/bloqueos | Alta | Crítico | S1, S2 | S2 medido; S1 30 min en ALSA |
 | R2 | El timing generativo suena mal por jitter o cuantización | Media | Crítico | S7 | Pendiente (M2) |
 | R3 | Reemplazo de grafo con clicks o picos de CPU | Alta | Alto | S3 | Pendiente |
 | R4 | El DSP suena genérico o con aliasing audible | Media | Crítico | S4 | Pendiente |
@@ -41,7 +41,7 @@
 
 **Desbloquea:** ADR-0002 (backend definitivo), VS2.
 
-**Medido el 2026-11-23 (parcial).** `cpal` 0.18.2 con features por defecto solo expone ALSA; en este equipo ese ALSA es el plugin de PipeWire. `BufferSize::Fixed(256)` a 48 kHz f32 estéreo fue aceptado. En 45 s: 8436/8438 callbacks (ratio 1.000), callback máximo 59 µs sobre 5333 µs de presupuesto, cero callbacks lentos. La feature `pipewire` compila contra `libpipewire-0.3` (crate `pipewire` 0.10.1) pero no se ejecutó: la medición de 30 min ocupa el dispositivo. No se midieron xruns del kernel, ni latencia impulso→salida, ni JACK (no hay `jackd`). El gate de 30 min sigue abierto. Detalle en ADR-0002.
+**Medido el 2026-11-23.** `cpal` 0.18.2 con features por defecto solo expone ALSA; en este equipo ese ALSA es el plugin de PipeWire. `BufferSize::Fixed(256)` a 48 kHz f32 estéreo fue aceptado. En 30 min: 337 517/337 500 callbacks (ratio 1.000, 17 de más por deriva de reloj, no bloques perdidos), callback máximo 459 µs sobre 5333 µs, cero callbacks lentos. La feature `pipewire` compila pero aún no se ha ejecutado. No hay `jackd`. Xruns del kernel y latencia impulso→salida siguen sin medir. Detalle en ADR-0002.
 
 ### S2 — Transferencia de parámetros y comandos sin locks
 
