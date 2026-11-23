@@ -11,11 +11,16 @@ unused-allowed-license = "allow"
 allow = [
     "MIT",
     "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
     "ISC",
     "BSD-2-Clause",
     "BSD-3-Clause",
     "Unicode-3.0",
     "Zlib",
+    # eframe's bundled UI fonts. Font licenses do not affect the product code
+    # license, but cargo-deny checks them as part of the dependency graph.
+    "OFL-1.1",
+    "Ubuntu-font-1.0",
 ]
 
 [sources]

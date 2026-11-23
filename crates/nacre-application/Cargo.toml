@@ -8,3 +8,5 @@ publish = false
 workspace = true
 
 [dependencies]
+nacre-domain = { path = "../nacre-domain" }
+thiserror.workspace = true

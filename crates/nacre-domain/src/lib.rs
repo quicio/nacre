@@ -5,7 +5,7 @@ use thiserror::Error;
 macro_rules! id_newtype {
     ($(#[$meta:meta])+ $name:ident) => {
         $(#[$meta])+
-        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+        #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
         pub struct $name(u64);
 
         impl $name {
@@ -40,6 +40,11 @@ id_newtype! {
 id_newtype! {
     /// Monotonic revision of domain state.
     Revision
+}
+
+id_newtype! {
+    /// Number of audio frames elapsed since an implementation-defined origin.
+    SampleTime
 }
 
 /// Errors produced by domain invariants.

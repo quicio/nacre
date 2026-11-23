@@ -1,95 +1,30 @@
-//! Audio runtime configuration, isolated from device access.
+//! Audio runtime: device lifecycle, realtime callback, offline rendering and WAV export.
+//!
+//! The control plane talks to [`AudioHost`] through
+//! [`nacre_application::AudioHostPort`]. Device access and `cpal` are confined
+//! to this crate.
 
-use nacre_dsp::{BlockSize, DspError, SampleRate};
-use thiserror::Error;
+mod command;
+mod host;
+mod offline;
+mod processor;
+mod sanitize;
+mod shared;
+mod wav;
 
-/// Errors produced by invalid audio configurations.
-#[derive(Clone, Copy, Debug, Error, Eq, PartialEq)]
-pub enum AudioConfigError {
-    /// At least one audio channel is required.
-    #[error("audio configuration must have at least one channel")]
-    ZeroChannels,
-    /// A DSP configuration value is invalid.
-    #[error(transparent)]
-    Dsp(#[from] DspError),
-}
+pub use host::AudioHost;
+pub use nacre_application::{AudioConfig, ParameterCommand as Command};
+pub use offline::{OfflineRenderer, hash_samples};
+pub use wav::{WavError, write_wav_f32};
 
-/// Device-independent audio configuration.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct AudioConfig {
-    sample_rate_hz: u32,
-    channels: u16,
-    buffer_size_frames: u32,
-}
+/// Snapshot type published by the runtime.
+pub type AudioSnapshot = nacre_application::AudioStatus;
 
-impl AudioConfig {
-    /// Creates a configuration whose values can be checked with [`Self::validate`].
-    pub const fn new(sample_rate_hz: u32, channels: u16, buffer_size_frames: u32) -> Self {
-        Self {
-            sample_rate_hz,
-            channels,
-            buffer_size_frames,
-        }
-    }
+/// Number of slots in the control-to-audio command queue.
+pub const COMMAND_QUEUE_CAPACITY: usize = 256;
 
-    /// Returns the sample rate in hertz.
-    pub const fn sample_rate_hz(self) -> u32 {
-        self.sample_rate_hz
-    }
+/// Maximum number of commands the callback applies per block.
+pub const MAX_COMMANDS_PER_BLOCK: usize = 64;
 
-    /// Returns the number of audio channels.
-    pub const fn channels(self) -> u16 {
-        self.channels
-    }
-
-    /// Returns the buffer size in frames.
-    pub const fn buffer_size_frames(self) -> u32 {
-        self.buffer_size_frames
-    }
-
-    /// Checks the sample rate, channel count and buffer size.
-    pub fn validate(self) -> Result<(), AudioConfigError> {
-        SampleRate::new(self.sample_rate_hz)?;
-
-        if self.channels == 0 {
-            return Err(AudioConfigError::ZeroChannels);
-        }
-
-        BlockSize::new(self.buffer_size_frames)?;
-        Ok(())
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use nacre_dsp::DspError;
-
-    use super::{AudioConfig, AudioConfigError};
-
-    #[test]
-    fn accepts_standard_audio_configuration() {
-        let config = AudioConfig::new(48_000, 2, 256);
-
-        assert_eq!(config.validate(), Ok(()));
-        assert_eq!(config.sample_rate_hz(), 48_000);
-        assert_eq!(config.channels(), 2);
-        assert_eq!(config.buffer_size_frames(), 256);
-    }
-
-    #[test]
-    fn rejects_zero_buffer_size() {
-        let config = AudioConfig::new(48_000, 2, 0);
-
-        assert_eq!(
-            config.validate(),
-            Err(AudioConfigError::Dsp(DspError::ZeroBlockSize))
-        );
-    }
-
-    #[test]
-    fn rejects_zero_channels() {
-        let config = AudioConfig::new(48_000, 0, 256);
-
-        assert_eq!(config.validate(), Err(AudioConfigError::ZeroChannels));
-    }
-}
+/// Duration of the stop fade applied inside the callback.
+pub const STOP_FADE_MS: f32 = 20.0;

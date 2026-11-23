@@ -8,5 +8,9 @@ publish = false
 workspace = true
 
 [dependencies]
+cpal.workspace = true
+nacre-application = { path = "../nacre-application" }
+nacre-domain = { path = "../nacre-domain" }
 nacre-dsp = { path = "../nacre-dsp" }
+rtrb.workspace = true
 thiserror.workspace = true
