@@ -23,7 +23,7 @@ Procesamiento por bloque, con parámetros suavizados dentro del bloque cuando ca
 - Fase normalizada `[0,1)` en `f64`.
 - Forma base: `2*phase - 1`.
 - Corrección PolyBLEP en la discontinuidad (salto de −1 a +1) y en la mitad del ciclo, con ancho proporcional al incremento de fase.
-- Sin sobremuestreo en la primera versión; si S4 mide alias > −60 dBFS, se activa oversampling 2× solo en el oscilador (no en toda la voz).
+- PolyBLEP con oversampling 4× solo en el oscilador, decidido por S4 (2026-11-23). 2× no cumple −60 dB a 1760 Hz. El resto de la voz corre a la tasa del dispositivo.
 
 ```text
 poly_blep(t, dt) =

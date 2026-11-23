@@ -1,6 +1,6 @@
 # ADR-0004 — Arquitectura DSP
 
-**Estado:** Accepted (con hipótesis abiertas sobre anti-aliasing y librerías)
+**Estado:** Accepted. Anti-aliasing del saw decidido por S4: PolyBLEP + 4× en el oscilador.
 **Fecha:** 2026-11-22
 
 ## Contexto
@@ -23,7 +23,7 @@ Datos verificados (2026-11-22):
 4. Procesamiento en `f32` con acumulación en `f64` donde la estabilidad lo requiera (integradores, filtros).
 5. Saneado obligatorio en la frontera de cada unidad: NaN/Inf → 0, clamping documentado, DC blocker donde aplique.
 6. Filtros con topología TPT/SVF (zero-delay feedback) para estabilidad en barridos y modulación rápida.
-7. Anti-aliasing de saw/square: decidir entre **PolyBLEP** y **oversampling 2×/4×** mediante spike S4. Por defecto, PolyBLEP por coste; oversampling si la medición auditiva lo exige.
+7. Anti-aliasing del saw: **PolyBLEP con oversampling 4× solo en el oscilador**, medido en S4 (2026-11-23). 1× no llega a −60 dB. 2× falla a 1760 Hz (−53,3 dB). 4× pasa las tres frecuencias (peor −74,7 dB).
 8. Sin SIMD en la primera versión. Se mide primero; se optimiza con datos.
 
 ## Alternativas consideradas

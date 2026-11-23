@@ -15,7 +15,7 @@
 | R1 | El callback de audio no es realmente libre de alloc/locks/bloqueos | Alta | Crítico | S1, S2 | S2 medido; S1 duración en ALSA, contrato en PipeWire nativo |
 | R2 | El timing generativo suena mal por jitter o cuantización | Media | Crítico | S7 | Pendiente (M2) |
 | R3 | Reemplazo de grafo con clicks o picos de CPU | Alta | Alto | S3 | Pendiente |
-| R4 | El DSP suena genérico o con aliasing audible | Media | Crítico | S4 | Pendiente |
+| R4 | El DSP suena genérico o con aliasing audible | Media | Crítico | S4 | S4 medido: 4× en el oscilador |
 | R5 | nih-plug no cubre VST3/CLAP o la licencia GPLv3 bloquea el negocio | Media | Alto | S5 | Pendiente (M4) |
 | R6 | La UI de egui consume CPU o falla dentro del plugin | Media | Medio | S6, S5 | Pendiente |
 | R7 | La evolución generativa destruye la identidad musical | Alta | Crítico | S7 (musical) | Pendiente (M2) |
@@ -85,6 +85,17 @@
 **Criterio de salida:** alias < −60 dBFS en el rango audible para el oscilador elegido; filtro estable en todo el barrido; decisión documentada. **Timebox:** 4 días.
 
 **Desbloquea:** ADR-0004, VS3.
+
+**Medido el 2026-11-23.** Saw de 1 s a 48 kHz, frecuencia en un bin, ventana rectangular. Alias = pico más alto que no es armónico, por debajo de 24 kHz, relativo a la fundamental.
+
+| | 110 Hz | 440 Hz | 1760 Hz |
+|---|---|---|---|
+| Naive | −46,8 dB | −34,8 dB | −22,9 dB |
+| PolyBLEP 1× | −54,7 dB | −42,8 dB | −31,2 dB |
+| PolyBLEP 2×, ideal | −77,3 dB | −65,3 dB | −53,3 dB |
+| PolyBLEP 4×, ideal | −98,0 dB | −86,0 dB | −74,7 dB |
+
+El criterio es −60 dB. 2× no basta a 1760 Hz. La voz usa PolyBLEP con decimación 4× solo en el oscilador. El filtro y el resto no se sobremuestrean.
 
 ### S5 — Viabilidad del plugin (CLAP/VST3, egui, transporte)
 
