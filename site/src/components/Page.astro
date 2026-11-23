@@ -1,0 +1,419 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Symbol from '../components/Symbol.astro';
+import type { Lang } from '../content/site';
+import { COPY, FACTS, FACT_LABELS, GITHUB, MILESTONES } from '../content/site';
+import strataA from '../assets/nacre-strata-a.png';
+import strataB from '../assets/nacre-strata-b.png';
+import uiInstrument from '../assets/ui-instrument-concept.png';
+import uiPatch from '../assets/ui-patch-concept.png';
+
+interface Props {
+  lang: Lang;
+  path: string;
+}
+
+const { lang, path } = Astro.props as Props;
+const c = COPY[lang];
+const factLabels = FACT_LABELS[lang];
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+const here = (hash: string) => `${base}${hash}`;
+const otherLang = lang === 'es' ? `${base}en/` : base;
+const docBase = `${GITHUB}/blob/main/`;
+
+const uiInstrumentLarge = await getImage({ src: uiInstrument, width: 1800, format: 'webp', quality: 88 });
+const uiPatchLarge = await getImage({ src: uiPatch, width: 1800, format: 'webp', quality: 88 });
+---
+
+<Base lang={lang} path={path}>
+  <header class="masthead">
+    <div class="shell masthead__inner">
+      <a class="brand" href={base} aria-label="NACRE — inicio">
+        <Symbol size={34} title="Símbolo de NACRE" />
+        <span class="brand__word">NACRE</span>
+        <span class="brand__descriptor meta">{c.hero.kicker}</span>
+      </a>
+      <nav class="masthead__nav" aria-label="Principal">
+        <a href={here('#roadmap')}>{c.nav.roadmap}</a>
+        <a href={here('#arquitectura')}>{c.nav.architecture}</a>
+        <a href={here('#especificaciones')}>{c.nav.specs}</a>
+        <a href={GITHUB} rel="noopener">{c.nav.github}</a>
+        <span class="masthead__state" aria-label={c.hero.statusLabel}>
+          <span class="masthead__dot" aria-hidden="true"></span>
+          M0
+        </span>
+        <a
+          class="lang-switch"
+          href={otherLang}
+          hreflang={lang === 'es' ? 'en' : 'es'}
+          aria-label={c.nav.switchLabel}
+          title={c.nav.switchLabel}
+        >
+          {c.nav.switch}
+        </a>
+      </nav>
+
+      <details class="nav-mobile">
+        <summary class="nav-mobile__toggle">
+          <span>{lang === 'es' ? 'Menú' : 'Menu'}</span>
+          <span aria-hidden="true">≡</span>
+        </summary>
+        <div class="nav-mobile__panel">
+          <a href={here('#roadmap')}>{c.nav.roadmap}</a>
+          <a href={here('#arquitectura')}>{c.nav.architecture}</a>
+          <a href={here('#especificaciones')}>{c.nav.specs}</a>
+          <a href={GITHUB} rel="noopener">{c.nav.github}</a>
+          <a href={otherLang} hreflang={lang === 'es' ? 'en' : 'es'}>{c.nav.switchLabel}</a>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__plate" aria-hidden="true">
+        <Image
+          src={strataA}
+          alt=""
+          widths={[960, 1440, 2048]}
+          sizes="100vw"
+          format="webp"
+          quality={78}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+
+      <div class="annotations" aria-hidden="true">
+        <span class="annotation annotation--a">{c.hero.annotationOne}</span>
+        <span class="annotation annotation--b">{c.hero.annotationTwo}</span>
+        <span class="annotation annotation--c">{c.hero.annotationThree}</span>
+      </div>
+
+      <div class="shell hero__grid">
+        <div class="hero__copy">
+          <h1 class="display hero__title" id="hero-title">
+            <span>{c.hero.titleA}</span>
+            <span>{c.hero.titleB}</span>
+            <span>{c.hero.titleC}</span>
+          </h1>
+          <p class="serif-note hero__lede">{c.hero.lede}</p>
+
+          <div class="hero__actions">
+            <a class="button" href={here('#roadmap')}>
+              {c.hero.cta}
+              <svg viewBox="0 0 18 10" fill="none" aria-hidden="true">
+                <path d="M0 5h16M12 1l4 4-4 4" stroke="currentColor" stroke-width="1" />
+              </svg>
+            </a>
+            <a class="button button--ghost" href={GITHUB} rel="noopener">{c.hero.ctaSecondary}</a>
+          </div>
+
+          <div class="hero__status">
+            <div>
+              <span class="meta hero__status-label">{c.hero.statusLabel}</span>
+              <span class="hero__status-value">{c.hero.statusValue}</span>
+            </div>
+            <span aria-hidden="true" style="width:1px;align-self:stretch;background:var(--line)"></span>
+            <div class="hero__facts" aria-label={c.hero.factsTitle}>
+              {FACTS.map((fact, i) => (
+                <span class="hero__fact">
+                  <b>{fact.value}</b> {factLabels[i]}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trajectory" aria-label={c.timeline.label}>
+      <div class="shell trajectory__inner">
+        <span class="meta trajectory__label">{c.timeline.label}</span>
+        <ol class="trajectory__track">
+          {MILESTONES.map((m) => (
+            <li class="trajectory__item" data-state={m.state}>
+              <span class="trajectory__dot" aria-hidden="true"></span>
+              <span class="trajectory__id">{m.id}</span>
+              <span class="trajectory__name">{lang === 'es' ? m.name : m.subtitle}</span>
+              <span class="trajectory__state">
+                {m.state === 'active' ? c.timeline.active : c.timeline.planned}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap" aria-labelledby="roadmap-title">
+      <div class="shell">
+        <div class="section__head">
+          <div>
+            <h2 class="section-title" id="roadmap-title">{c.roadmap.title}</h2>
+          </div>
+          <p class="section-lede">{c.roadmap.lede}</p>
+        </div>
+
+        <div class="roadmap">
+          {MILESTONES.map((m) => (
+            <details class="roadmap__item" data-state={m.state} open={m.state === 'active'}>
+              <summary class="roadmap__summary">
+                <span class="roadmap__id">{m.id}</span>
+                <span class="roadmap__name">
+                  {lang === 'es' ? m.name : m.subtitle}
+                  <small>
+                    {m.slices.length}{' '}
+                    {lang === 'es'
+                      ? m.slices.length === 1
+                        ? 'tramo'
+                        : 'tramos'
+                      : m.slices.length === 1
+                        ? 'slice'
+                        : 'slices'}
+                  </small>
+                </span>
+                <span class="roadmap__state">
+                  {m.state === 'active' ? c.roadmap.stateActive : c.roadmap.statePlanned}
+                </span>
+              </summary>
+              <div class="roadmap__body">
+                <p class="roadmap__gate">
+                  <b>{c.roadmap.gateLabel}</b>
+                  {m.gate}
+                </p>
+                <ul class="slices" aria-label={c.roadmap.sliceLabel}>
+                  {m.slices.map((s) => (
+                    <li>
+                      <code>{s.code}</code>
+                      <span>{s.title}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+          ))}
+        </div>
+        <p class="roadmap__note">{c.roadmap.note}</p>
+      </div>
+    </section>
+
+    <section class="section" id="principios" aria-labelledby="features-title">
+      <div class="shell">
+        <div class="section__head">
+          <div>
+            <h2 class="section-title" id="features-title">{c.features.title}</h2>
+          </div>
+          <p class="section-lede">{c.features.lede}</p>
+        </div>
+
+        <div class="features">
+          {c.features.items.map((item, i) => (
+            <article class="feature" data-reveal>
+              <span class="feature__num">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="feature__title">{item.title}</h3>
+                <p class="feature__body">{item.body}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="arquitectura" aria-labelledby="arch-title">
+      <div class="shell">
+        <div class="section__head">
+          <div>
+            <h2 class="section-title" id="arch-title">{c.architecture.title}</h2>
+          </div>
+          <p class="section-lede">{c.architecture.lede}</p>
+        </div>
+
+        <div class="architecture">
+          <div class="stack-wrap">
+            <div class="stack">
+            {c.architecture.layers.map((layer, i) => (
+              <>
+                {i > 0 && (
+                  <span class="layer-arrow" aria-hidden="true">
+                    <span>↓</span>
+                  </span>
+                )}
+                <div class={`layer${i === c.architecture.layers.length - 1 ? ' layer--domain' : ''}`}>
+                  <span class="layer__name">{layer.name}</span>
+                  <span class="layer__detail">{layer.detail}</span>
+                </div>
+              </>
+            ))}
+            </div>
+            <p class="stack-caption">
+              {lang === 'es'
+                ? 'Presentación → Aplicación → Dominio. La dependencia apunta hacia abajo.'
+                : 'Presentation → Application → Domain. Dependencies point downward.'}
+            </p>
+          </div>
+
+          <div class="arch-side">
+            <div class="arch-side__box">
+              <span class="layer__name">{c.architecture.side.name}</span>
+              <span class="layer__detail">{c.architecture.side.detail}</span>
+            </div>
+            <p class="arch-rule">{c.architecture.rule}</p>
+            <a class="text-link" href={`${docBase}docs/architecture/dependency-graph.md`} rel="noopener">
+              {c.architecture.link} ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="interfaz" aria-labelledby="interface-title">
+      <div class="shell">
+        <div class="section__head">
+          <div>
+            <h2 class="section-title" id="interface-title">{c.interface.title}</h2>
+          </div>
+          <p class="section-lede">{c.interface.lede}</p>
+        </div>
+
+        <div class="plates">
+          <figure class="plate">
+            <span class="plate__tag">{c.interface.concept}</span>
+            <a class="plate__zoom" href={uiInstrumentLarge.src} target="_blank" rel="noopener" aria-label={`${c.interface.concept}: ${c.interface.captionOne}`}>
+              <Image
+                src={uiInstrument}
+                alt={c.interface.captionOne}
+                widths={[640, 1280]}
+                sizes="(min-width: 780px) 50vw, 100vw"
+                format="webp"
+                quality={80}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+            <figcaption>{c.interface.captionOne}</figcaption>
+          </figure>
+          <figure class="plate">
+            <span class="plate__tag">{c.interface.concept}</span>
+            <a class="plate__zoom" href={uiPatchLarge.src} target="_blank" rel="noopener" aria-label={`${c.interface.concept}: ${c.interface.captionTwo}`}>
+              <Image
+                src={uiPatch}
+                alt={c.interface.captionTwo}
+                widths={[640, 1280]}
+                sizes="(min-width: 780px) 50vw, 100vw"
+                format="webp"
+                quality={80}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+            <figcaption>{c.interface.captionTwo}</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="especificaciones" aria-labelledby="specs-title">
+      <div class="shell">
+        <div class="section__head">
+          <div>
+            <h2 class="section-title" id="specs-title">{c.specs.title}</h2>
+          </div>
+          <p class="section-lede">{c.specs.lede}</p>
+        </div>
+
+        <div class="specs-grid">
+          <div class="specs-left">
+            <div class="spec-figures">
+              {FACTS.map((fact, i) => (
+                <div class="spec-figure">
+                  <span class="spec-figure__value">{fact.value}</span>
+                  <span class="spec-figure__label">{factLabels[i]}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="spec-contents">
+              <span class="meta">{c.specs.contentsLabel}</span>
+              <ol>
+                {c.specs.contents.map((item, i) => (
+                  <li>
+                    <span>{String(i + 1).padStart(2, '0')}</span>
+                    {item}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+
+          <article class="requirement">
+            <span class="requirement__label">{c.specs.reqLabel}</span>
+            <h3 class="requirement__title">{c.specs.reqTitle}</h3>
+            <p class="requirement__body">{c.specs.reqBody}</p>
+            <ul>
+              <li class="scenario">
+                <span class="scenario__kw">WHEN</span>
+                <span class="scenario__text">{c.specs.scenarioOneWhen}</span>
+                <span class="scenario__kw scenario__kw--then">THEN</span>
+                <span class="scenario__text">{c.specs.scenarioOneThen}</span>
+              </li>
+              <li class="scenario">
+                <span class="scenario__kw">WHEN</span>
+                <span class="scenario__text">{c.specs.scenarioTwoWhen}</span>
+                <span class="scenario__kw scenario__kw--then">THEN</span>
+                <span class="scenario__text">{c.specs.scenarioTwoThen}</span>
+              </li>
+            </ul>
+            <a class="text-link" href={`${docBase}openspec/changes`} rel="noopener">{c.specs.link} ↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="close" aria-labelledby="close-title">
+      <div class="close__plate" aria-hidden="true">
+        <Image
+          src={strataB}
+          alt=""
+          widths={[960, 1600]}
+          sizes="100vw"
+          format="webp"
+          quality={75}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="shell close__inner">
+        <h2 class="close__title" id="close-title">{c.close.title}</h2>
+        <p class="close__body">{c.close.body}</p>
+        <div class="hero__actions">
+          <a class="button" href={GITHUB} rel="noopener">
+            {c.close.cta}
+            <svg viewBox="0 0 18 10" fill="none" aria-hidden="true">
+              <path d="M0 5h16M12 1l4 4-4 4" stroke="currentColor" stroke-width="1" />
+            </svg>
+          </a>
+          <a class="button button--ghost" href={`${docBase}docs/product/vision.md`} rel="noopener">
+            {c.close.secondary}
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer__inner">
+      <span class="footer__brand">NACRE</span>
+      <span class="footer__note">{c.footer.note}</span>
+      <span class="footer__note">{c.footer.built}</span>
+      <span class="footer__links">
+        <a href={`${docBase}docs/product/roadmap.md`} rel="noopener">{c.nav.roadmap}</a>
+        <a href={`${docBase}openspec`} rel="noopener">OpenSpec</a>
+        <a href={GITHUB} rel="noopener">GitHub</a>
+      </span>
+    </div>
+  </footer>
+</Base>

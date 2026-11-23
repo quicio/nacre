@@ -15,6 +15,8 @@ Nacre explora composición generativa, diseño sonoro modular, ritmo procedural 
 | [docs/product/vision.md](docs/product/vision.md) | Visión, identidad sonora, no-objetivos |
 | [docs/product/principles.md](docs/product/principles.md) | Principios de producto y arquitectura |
 | [docs/product/roadmap.md](docs/product/roadmap.md) | Roadmap por milestones, slices y gates |
+| [PRODUCT.md](PRODUCT.md) | Verdad de producto para el trabajo de diseño |
+| [DESIGN.md](DESIGN.md) | Sistema visual: color, tipografía, componentes |
 | [docs/architecture/overview.md](docs/architecture/overview.md) | Clean Architecture y límites |
 | [docs/architecture/domain-model.md](docs/architecture/domain-model.md) | Patch, Composition, Performance |
 | [docs/architecture/audio-runtime.md](docs/architecture/audio-runtime.md) | Runtime de audio y grafo |
@@ -48,6 +50,24 @@ Changes planificados para el primer slice:
 | `004-parameter-system` | Parámetros tipados, smoothing, transferencia RT | `parameter-system` |
 
 Orden de implementación: 001 → 002 → 003 → 004. Ver [roadmap](docs/product/roadmap.md).
+
+## Sitio web
+
+El sitio público vive en [`site/`](site/): Astro estático, bilingüe (ES por defecto, EN conmutable), desplegado en GitHub Pages con `.github/workflows/pages.yml`.
+
+Contenido real, sin inventar: estado M0, roadmap con gates, principios, arquitectura, especificaciones y dos maquetas de interfaz **etiquetadas como concepto** (no hay capturas de la app porque no existe).
+
+```bash
+cd site
+npm install
+npm run dev        # http://localhost:4321/nacre/
+npm run build      # genera site/dist
+npm run check      # tipos y diagnóstico de Astro
+```
+
+Variables de despliegue: `SITE_URL` (por defecto `https://hugomoraga.github.io`) y `BASE_PATH` (por defecto `/nacre`). Para un repo con otro nombre, cambia `BASE_PATH`.
+
+La identidad visual está documentada en [DESIGN.md](DESIGN.md); el brief de producto que la sostiene, en [PRODUCT.md](PRODUCT.md).
 
 ## Requisitos de entorno
 

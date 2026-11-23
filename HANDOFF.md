@@ -17,6 +17,15 @@
 - Evaluación de dependencias con datos reales de crates.io/GitHub (`docs/research/dependency-evaluation.md`).
 - OpenSpec 2.1 inicializado en `openspec/` con 4 changes planificados.
 
+### Identidad y sitio (2026-11-22)
+
+- `PRODUCT.md`: verdad de producto y restricciones de marca para el trabajo de diseño.
+- `DESIGN.md`: sistema visual (obsidiana, nácar, Bodoni Moda + Archivo + Azeret Mono, reglas de 1 px, cero radios).
+- `site/`: Astro estático bilingüe ES/EN con el sitio público (estado, roadmap, principios, arquitectura, specs, dos maquetas conceptuales).
+- `.github/workflows/pages.yml`: despliegue a GitHub Pages.
+- `.impeccable/`: configuración de Impeccable, comp aprobada (`mocks/approved/`) y sidecar de tokens (`design.json`).
+- La placa de nácar del hero y del cierre es una imagen generada, con prompt embebido en el PNG (`embed-prompt`); las dos maquetas de UI están etiquetadas como **concepto** y también llevan su procedencia.
+
 ## Qué NO existe todavía
 
 - `Cargo.toml` / workspace Rust.

@@ -1,0 +1,28 @@
+---
+interface Props {
+  size?: number;
+  class?: string;
+  title?: string;
+}
+const { size = 34, class: className = 'brand__mark', title = 'Símbolo de NACRE' } = Astro.props;
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 48 48"
+  fill="none"
+  role="img"
+  aria-label={title}
+>
+  <g stroke="currentColor" stroke-width="0.9" vector-effect="non-scaling-stroke">
+    <ellipse cx="24" cy="24" rx="21" ry="12.4" transform="rotate(-27 24 24)" opacity="0.55" />
+    <ellipse cx="24.6" cy="23.4" rx="17.2" ry="10.1" transform="rotate(-23 24 24)" opacity="0.75" />
+    <ellipse cx="23.4" cy="24.6" rx="13.4" ry="7.9" transform="rotate(-31 24 24)" opacity="0.9" />
+    <ellipse cx="24.8" cy="24" rx="9.6" ry="5.6" transform="rotate(-19 24 24)" />
+    <ellipse cx="23.8" cy="24.4" rx="5.9" ry="3.5" transform="rotate(-35 24 24)" />
+    <ellipse cx="24.2" cy="24.1" rx="2.6" ry="1.6" transform="rotate(-25 24 24)" />
+  </g>
+  <circle cx="24" cy="24" r="0.9" fill="currentColor" />
+</svg>

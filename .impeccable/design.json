@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "name": "NACRE",
+  "generatedAt": "2026-11-22",
+  "source": "site/src/styles/global.css",
+  "surface": "site/",
+  "tokens": {
+    "colors": {
+      "obsidian": "#050607",
+      "graphite": "#101214",
+      "graphite-2": "#171C1F",
+      "mineral": "#232A2D",
+      "pearl": "#E9E4D8",
+      "pearl-dim": "#BDB8AB",
+      "pearl-mute": "#9B978C",
+      "line": "rgba(233, 228, 216, 0.14)",
+      "line-strong": "rgba(233, 228, 216, 0.28)",
+      "iridescent-violet": "#B3A6CF",
+      "mineral-sea": "#93A89A",
+      "warm-amber": "#C8A878"
+    },
+    "typography": {
+      "display": {
+        "fontFamily": "Bodoni Moda, Times New Roman, serif",
+        "fontWeight": 500,
+        "fontSize": "clamp(2.4rem, 5.2vw, 5.2rem)",
+        "lineHeight": 1.02,
+        "letterSpacing": "-0.03em"
+      },
+      "section-title": {
+        "fontFamily": "Bodoni Moda, Times New Roman, serif",
+        "fontWeight": 400,
+        "fontSize": "clamp(2.1rem, 4.6vw, 4rem)",
+        "lineHeight": 0.98,
+        "letterSpacing": "-0.015em"
+      },
+      "body": {
+        "fontFamily": "Archivo, system-ui, sans-serif",
+        "fontWeight": 400,
+        "fontSize": "1rem",
+        "lineHeight": 1.6
+      },
+      "label": {
+        "fontFamily": "Azeret Mono, ui-monospace, monospace",
+        "fontWeight": 400,
+        "fontSize": "0.75rem",
+        "letterSpacing": "0.12em"
+      }
+    },
+    "spacing": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "32px",
+      "xl": "64px",
+      "section": "clamp(5rem, 11vw, 9.5rem)",
+      "gutter": "clamp(1.25rem, 4vw, 3.5rem)"
+    },
+    "radii": {
+      "none": "0px",
+      "circle": "50%"
+    },
+    "motion": {
+      "ease": "cubic-bezier(0.19, 1, 0.22, 1)",
+      "reveal": "900ms",
+      "hover": "250ms"
+    }
+  },
+  "components": {
+    "button-primary": {
+      "backgroundColor": "transparent",
+      "textColor": "{colors.pearl}",
+      "borderColor": "{colors.pearl}",
+      "typography": "{typography.label}",
+      "rounded": "{radii.none}",
+      "height": "52px",
+      "padding": "0 18px"
+    },
+    "button-primary-hover": {
+      "backgroundColor": "{colors.graphite-2}",
+      "textColor": "{colors.pearl}"
+    },
+    "plate": {
+      "backgroundColor": "{colors.graphite}",
+      "borderColor": "{colors.line}",
+      "rounded": "{radii.none}"
+    },
+    "requirement": {
+      "backgroundColor": "{colors.graphite}",
+      "borderColor": "{colors.line}",
+      "rounded": "{radii.none}",
+      "padding": "32px"
+    }
+  },
+  "notes": [
+    "Dark-only in this iteration; light theme is not implemented.",
+    "No shadows; depth comes from material, planes and 1px rules.",
+    "Uppercase accents require line-height >= 1.02 in Bodoni Moda.",
+    "Functional text floor is 12px; contrast target is WCAG AA."
+  ]
+}
