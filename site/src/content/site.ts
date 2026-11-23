@@ -97,7 +97,7 @@ export const COPY = {
     meta: {
       title: 'NACRE — instrumento musical generativo',
       description:
-        'Un instrumento musical generativo escrito en Rust. Sistemas que producen música, no canciones programadas. En desarrollo: M0, fundación.',
+        'Un instrumento musical generativo escrito en Rust: capas, semillas y evolución con identidad sonora. En desarrollo: M0, fundación.',
       ogAlt: 'Capas de nácar iridiscente sobre negro',
     },
     nav: {
@@ -111,8 +111,8 @@ export const COPY = {
     },
     hero: {
       kicker: 'Instrumento musical generativo',
-      titleA: 'No programes',
-      titleB: 'canciones.',
+      titleA: 'No compongas',
+      titleB: 'piezas.',
       titleC: 'Crea sistemas.',
       lede: 'Un instrumento generativo escrito en Rust: capas, semillas y evolución con identidad sonora.',
       cta: 'Explorar el roadmap',
@@ -262,7 +262,7 @@ export const COPY = {
     meta: {
       title: 'NACRE — generative musical instrument',
       description:
-        'A generative musical instrument written in Rust. Systems that produce music, not programmed songs. In development: M0, foundation.',
+        'A generative musical instrument written in Rust: layers, seeds and evolution with a sonic identity. In development: M0, foundation.',
       ogAlt: 'Iridescent mother-of-pearl layers on black',
     },
     nav: {
@@ -276,9 +276,9 @@ export const COPY = {
     },
     hero: {
       kicker: 'Generative musical instrument',
-      titleA: 'Don’t program',
-      titleB: 'songs.',
-      titleC: 'Create systems.',
+      titleA: 'Don’t compose',
+      titleB: 'pieces.',
+      titleC: 'Build systems.',
       lede: 'A generative instrument written in Rust: layers, seeds and evolution with a sonic identity of its own.',
       cta: 'Explore the roadmap',
       ctaSecondary: 'Read the code',
