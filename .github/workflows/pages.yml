@@ -38,7 +38,7 @@ jobs:
       - name: Build
         working-directory: site
         env:
-          SITE_URL: https://hugomoraga.github.io
+          SITE_URL: https://quicio.github.io
           BASE_PATH: /nacre
         run: npm run build
 

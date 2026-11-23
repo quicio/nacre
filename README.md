@@ -96,7 +96,7 @@ npm run build      # genera site/dist
 npm run check      # tipos y diagnóstico de Astro
 ```
 
-Variables de despliegue: `SITE_URL` (por defecto `https://hugomoraga.github.io`) y `BASE_PATH` (por defecto `/nacre`). Para un repo con otro nombre, cambia `BASE_PATH`.
+Variables de despliegue: `SITE_URL` (por defecto `https://quicio.github.io`) y `BASE_PATH` (por defecto `/nacre`). Para un repo con otro nombre, cambia `BASE_PATH`.
 
 La identidad visual está documentada en [DESIGN.md](DESIGN.md); el brief de producto que la sostiene, en [PRODUCT.md](PRODUCT.md).
 

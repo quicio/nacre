@@ -2,7 +2,7 @@ export type Lang = 'es' | 'en';
 
 export const LANGS: Lang[] = ['es', 'en'];
 
-export const GITHUB = 'https://github.com/hugomoraga/nacre';
+export const GITHUB = 'https://github.com/quicio/nacre';
 
 export type Milestone = {
   id: string;

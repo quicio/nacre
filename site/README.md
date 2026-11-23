@@ -38,9 +38,9 @@ site/
 El workflow `.github/workflows/pages.yml` construye y publica en cada push a `main` que toque `site/`. Requiere:
 
 1. Repositorio en GitHub con Pages configurado en **Settings → Pages → Source: GitHub Actions**.
-2. `SITE_URL` y `BASE_PATH` correctos en el workflow (por defecto `https://hugomoraga.github.io` y `/nacre`).
+2. `SITE_URL` y `BASE_PATH` correctos en el workflow (por defecto `https://quicio.github.io` y `/nacre`).
 
-URL esperada: `https://hugomoraga.github.io/nacre/`.
+URL esperada: `https://quicio.github.io/nacre/`.
 
 ## Contenido
 
