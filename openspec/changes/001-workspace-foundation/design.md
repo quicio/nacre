@@ -63,7 +63,7 @@ Se ejecuta en CI. Un fallo es un error, no una advertencia.
 Licencias permitidas: `MIT`, `Apache-2.0`, `ISC`, `BSD-2-Clause`, `BSD-3-Clause`, `Unicode-3.0`, `Zlib`. `GPL-3.0` explícitamente **no** permitida hasta que se decida la licencia del producto (ADR-0003). Esto bloquea `vst3-sys` si alguien lo introduce por error.
 
 ### D7 — Validación de OpenSpec en CI
-`openspec validate --strict` en el job de documentación. Evita specs inválidas y changes a medio escribir.
+`openspec validate --all --strict` en el job de documentación. Evita specs inválidas y changes a medio escribir.
 
 ## Alternativas consideradas
 
@@ -92,7 +92,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo fmt --all --check
 ./scripts/check-deps.sh
 cargo deny check
-openspec validate --strict
+openspec validate --all --strict
 ```
 
 Criterio de salida: todos los comandos en verde, el binario arranca e imprime su versión, y ningún crate contiene módulos vacíos ni `todo!()`.

@@ -4,7 +4,7 @@
 
 ## Última actualización
 
-**2026-11-22** — Fase M0 (planificación). Sin código de audio.
+**2026-11-23** — Change `001-workspace-foundation` implementado y verificado. Sin código de audio todavía.
 
 ## Qué existe
 
@@ -29,23 +29,22 @@
 
 ## Qué NO existe todavía
 
-- `Cargo.toml` / workspace Rust.
-- Cualquier crate, test o binario.
-- CI.
+- Audio real: el crate `nacre-audio-runtime` solo tiene `AudioConfig`; no hay `cpal`, callback ni dispositivo.
 - Plugin (VST3/CLAP), MIDI, UI.
+- Spikes S1 (backends CPAL) y S2 (transferencia RT): hipótesis, no mediciones.
 
 ## Change activo
 
-**`001-workspace-foundation`** — pendiente de aprobación humana y de `openspec validate --strict`.
+**`002-audio-foundation`** — especificado, no implementado. Antes de empezar exige los spikes S1 y S2 (`docs/research/risks-and-spikes.md`); su promesa central (callback sin asignaciones ni locks con CPAL) es una hipótesis hasta que se midan.
 
-Al aprobarse: implementar `tasks.md` en orden, sin adelantar los changes 002–004.
+El change `001-workspace-foundation` está implementado y verificado, pendiente de revisión humana y de `openspec archive`. No archivar sin esa revisión.
 
 ## Estado de los changes
 
 | Change | Artefactos | Implementado | Notas |
 |---|---|---|---|
-| `001-workspace-foundation` | proposal, design, tasks | No | Sin delta specs (`skip_specs: true`): es tooling |
-| `002-audio-foundation` | proposal, specs, design, tasks | No | Bloqueado por 001; requiere spike S1 |
+| `001-workspace-foundation` | proposal, design, tasks | Sí (2026-11-23) | 16/16 tareas; 10 tests; gates en verde. Pendiente de archivar |
+| `002-audio-foundation` | proposal, specs, design, tasks | No | Requiere spikes S1 y S2 antes de empezar |
 | `003-voice-synthesis` | proposal, specs, design, tasks | No | Bloqueado por 002 |
 | `004-parameter-system` | proposal, specs, design, tasks | No | Bloqueado por 003 |
 
@@ -56,7 +55,7 @@ Al aprobarse: implementar `tasks.md` en orden, sin adelantar los changes 002–0
 3. **PolyBLEP vs oversampling** para saw. Spike S4.
 4. **Formato de patch**: JSON legible vs binario compacto vs ambos con versión. Ver ADR-0008.
 5. **Alcance del plugin**: VST3 primero, CLAP después (o simultáneos). Depende del spike S5.
-6. **Nombre definitivo del producto** ("Nacre" es el nombre de trabajo).
+6. **Nombre definitivo del producto** ("Nacre" es el nombre de trabajo). Ya está en los cinco crates y en el binario; cambiarlo ahora es un refactor del workspace completo.
 
 ## Cómo continuar
 
@@ -64,7 +63,7 @@ Al aprobarse: implementar `tasks.md` en orden, sin adelantar los changes 002–0
 cd /home/hugo/projects/nacre
 openspec list --specs          # capacidades construidas (vacío hoy)
 openspec show 001-workspace-foundation
-openspec validate --strict
+openspec validate --all --strict
 ```
 
 Si el change activo está aprobado, implementa sus tareas. Si no, pregunta antes de escribir código.

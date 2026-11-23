@@ -1,0 +1,12 @@
+[package]
+name = "nacre-audio-runtime"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+nacre-dsp = { path = "../nacre-dsp" }
+thiserror.workspace = true

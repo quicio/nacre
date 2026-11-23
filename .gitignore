@@ -1,3 +1,8 @@
+# Rust workspace
+/target
+*.wav
+.DS_Store
+/openspec/.cache/
 
 # Impeccable runtime (keep PRODUCT.md, DESIGN.md, .impeccable/config.json, approved comps)
 .impeccable/review/

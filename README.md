@@ -8,7 +8,7 @@ Nacre explora composición generativa, diseño sonoro modular, ritmo procedural 
 
 ## Estado
 
-**Fase de planificación (M0).** No hay código de audio todavía. Este repositorio contiene la visión de producto, la arquitectura, las decisiones (ADRs), el roadmap y las especificaciones del primer vertical slice en OpenSpec.
+**Fase M0: fundación del workspace implementada.** No hay dispositivo de audio, DSP musical ni UI todavía. El repositorio contiene la visión de producto, la arquitectura, las decisiones (ADRs), el roadmap y las especificaciones del primer vertical slice en OpenSpec.
 
 | Documento | Contenido |
 |---|---|
@@ -26,6 +26,37 @@ Nacre explora composición generativa, diseño sonoro modular, ritmo procedural 
 | [docs/research/risks-and-spikes.md](docs/research/risks-and-spikes.md) | Riesgos ordenados y spikes |
 | [docs/research/dependency-evaluation.md](docs/research/dependency-evaluation.md) | Evaluación real de dependencias |
 | [docs/adr/](docs/adr/) | Architecture Decision Records |
+
+## Workspace
+
+El workspace tiene cinco paquetes y fija Rust 1.100.0, edición 2024 y lints compartidos:
+
+```text
+crates/
+├── nacre-domain          IDs, revisiones y errores base del dominio
+├── nacre-application     Puertos AudioHost, Clock y Renderer
+├── nacre-dsp             SampleRate, BlockSize y utilidades DSP puras
+└── nacre-audio-runtime   AudioConfig validada, sin acceso a dispositivos
+apps/
+└── nacre-standalone      Binario mínimo; informa que el audio no está inicializado
+```
+
+## Desarrollo
+
+Desde la raíz del repositorio:
+
+```bash
+cargo build --workspace
+cargo run -p nacre-standalone
+cargo test --workspace
+cargo clippy --workspace --all-targets -- -D warnings
+cargo fmt --all --check
+./scripts/check-deps.sh
+cargo deny check
+openspec validate --all --strict
+```
+
+`scripts/check-deps.sh` consulta `cargo metadata` para rechazar dependencias prohibidas, desplazamientos de `cpal` fuera del runtime y ciclos entre paquetes. La CI de Linux se define en `.github/workflows/ci.yml`.
 
 ## Metodología
 
@@ -71,8 +102,9 @@ La identidad visual está documentada en [DESIGN.md](DESIGN.md); el brief de pro
 
 ## Requisitos de entorno
 
-- Rust 1.100+ (edición 2024).
-- Linux con ALSA/PipeWire; macOS CoreAudio; Windows WASAPI (soporte a validar en CI).
+- Rust 1.100.0 (fijado en `rust-toolchain.toml`, edición 2024).
+- `cargo-deny` 0.22.0 y `actionlint` 1.7.12 para los controles locales.
+- Linux con ALSA/PipeWire; macOS CoreAudio; Windows WASAPI (soporte de audio a validar en CI cuando exista el runtime).
 - OpenSpec CLI 2.1+ (solo para el flujo de specs, no para compilar).
 
 ## Licencia
